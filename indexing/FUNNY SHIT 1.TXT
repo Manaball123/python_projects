@@ -1,0 +1,66 @@
+OMFG THIS CODE IS SO FUCKING BAD
+#this this index method goes through everything in elements,
+#BUT it puts smallest AND largest amt into the sorted array
+#it also remembers every element appended(might be slower?idk)
+def index_2():
+    global elements
+    global indexed
+    global counter
+    global amount
+    minnum=huge
+    maxnum=0-huge
+    i=0
+    j=0
+    k=0
+    appended_index=np.array([-1]*amount)
+    def isChecked(ind):
+        
+        checklen=len(appended_index)
+        i=0
+        while i<checklen:
+            
+            if appended_index[i]==ind:
+                return True
+                
+            i=i+1
+        return False
+
+
+    minindex=-1
+    maxindex=-1
+    while j<amount/2:
+        i=0
+        
+        while i<amount:
+           
+            if isChecked(i)==False: 
+               current_element=elements[i]          
+               if current_element<minnum:
+               
+                    minnum=current_element
+                    minindex=i
+                   
+               if current_element>maxnum:
+                    maxnum=current_element
+                    maxindex=i
+                    
+               counter=counter+1
+            i=i+1
+
+run this shit lmfao
+        appended_index[k]=minindex
+        k=k+1
+        appended_index[k]=maxindex
+        k=k+1
+        
+        indexed[j]=minnum
+        indexed[amount-1-j]=maxnum
+        
+        minnum=huge
+        maxnum=0-huge
+        #comment this out if u dont want debug
+        print(str(j*2)+"/"+str(amount))
+        j=j+1
+
+
+
