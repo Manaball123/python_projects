@@ -112,140 +112,147 @@ w2.initweights(-1,1)
 
 #variable declaration
 counter=1
-sampleSize=0
+sampleSize=100
 data=0
-learningRate=0
+learningRate=10
 totalCost=0
 prevAvg=2147483647
 #not detailed log
 log=False
 #detailed log
 debug=False
-
-while counter<=20:
-    #resets total cost for a session
-    totalCost=0
-    print("================================================================STARTING SESSION "+str(counter)+"================================================================")
-    seed=0
-    random.seed(seed)
-    i=1
-    
-    w0.initDerivatives()
-    w1.initDerivatives()
-    w2.initDerivatives()
-    """
-    sampleSize=int(input("Enter Training Sample Size: "))
-    learningRate=float(input("Enter Learning Rate: "))
-    """
-    sampleSize=100
-    learningRate=1
-    while i<=sampleSize:
-        #generates training data
-        data=genData()
-        seed=seed+1
+#summary
+summary=True
+while True:
+    counter=0
+    while counter<=500:
+        #resets total cost for a session
+        totalCost=0
+        print("================================================================STARTING SESSION "+str(counter)+"================================================================")
+        seed=0
         random.seed(seed)
-        answer=answerConverter(data[2])
+        i=1
+        
+        w0.initDerivatives()
+        w1.initDerivatives()
+        w2.initDerivatives()
+        """
+        sampleSize=int(input("Enter Training Sample Size: "))
+        learningRate=float(input("Enter Learning Rate: "))
+        """
+        sampleSize=100
+        learningRate=1
+        while i<=sampleSize:
+            #generates training data
+            data=genData()
+            seed=seed+1
+            random.seed(seed)
+            answer=answerConverter(data[2])
 
-        #inputs the data
-        n0.neurons[0]=data[0]
-        n0.neurons[1]=data[1]
+            #inputs the data
+            n0.neurons[0]=data[0]
+            n0.neurons[1]=data[1]
+            
+            #gets output of the network
+            propagate()
+            #gets cost of current sample
+            currentCost=ai.getCost(answer,n3.neurons)
+            #print logs
+            
+            
+            if log==True:
+                print("--------------------------------Trial "+str(i)+": --------------------------------")
+                print("input layer: ")
+                print(n0.neurons)
+                print("1st layer: ")
+                print(n1.neurons)
+                print("2nd layer:")
+                print(n2.neurons)
+                print("The output is: "+str(n3.neurons[0])+","+str(n3.neurons[1]))
+                print("The correct answer is: "+str(answer[0])+","+str(answer[1]))
+                print("The cost is therefore "+str(currentCost))
+            
+            
+            #gets the gradient of every weight
+            deriveWeights(w0.weights,w0.derivatives,currentCost,answer)
+            deriveWeights(w1.weights,w1.derivatives,currentCost,answer)
+            deriveWeights(w2.weights,w2.derivatives,currentCost,answer)
+            
+            #prints detailed logs for every sample processed
+            if debug==True:
+                print("Weights are currently:")
+                print(w0.weights)
+                print(w1.weights)
+                print(w2.weights)
+                print("derivatives are currently:")
+                print(w0.derivatives)
+                print(w1.derivatives)
+                print(w2.derivatives)
+                
+            #adds current cost to the total cost
+            totalCost+=currentCost
         
-        #gets output of the network
-        propagate()
-        #gets cost of current sample
-        currentCost=ai.getCost(answer,n3.neurons)
-        #print logs
         
+
         
-        if log==True:
-            print("--------------------------------Trial "+str(i)+": --------------------------------")
-            print("input layer: ")
-            print(n0.neurons)
-            print("1st layer: ")
-            print(n1.neurons)
-            print("2nd layer:")
-            print(n2.neurons)
-            print("The output is: "+str(n3.neurons[0])+","+str(n3.neurons[1]))
-            print("The correct answer is: "+str(answer[0])+","+str(answer[1]))
-            print("The cost is therefore "+str(currentCost))
-        
-        
-        #gets the gradient of every weight
-        deriveWeights(w0.weights,w0.derivatives,currentCost,answer)
-        deriveWeights(w1.weights,w1.derivatives,currentCost,answer)
-        deriveWeights(w2.weights,w2.derivatives,currentCost,answer)
-        
-        #prints detailed logs for every sample processed
-        if debug==True:
-            print("Weights are currently:")
-            print(w0.weights)
-            print(w1.weights)
-            print(w2.weights)
+
+            i+=1
+
+        #gets the average cost 
+        averageCost=totalCost/sampleSize
+        #prints log for current trial
+        if summary==True:
+            print("================================================================END OF SESSION================================================================")
+            
             print("derivatives are currently:")
             print(w0.derivatives)
             print(w1.derivatives)
             print(w2.derivatives)
+
+        w0.clampDerivatives(sampleSize)
+        w1.clampDerivatives(sampleSize)
+        w2.clampDerivatives(sampleSize)
+
+        print("The average cost for this session is: "+str(averageCost))
+        print("The average cost in the pervious trial is: "+str(prevAvg))
+        
+        #backs up weights, and tweaks them, if the current iteration is better than previous
+        if prevAvg<averageCost:
             
-        #adds current cost to the total cost
-        totalCost+=currentCost
-    
-       
+            #if current weights are less ideal than previous
+            print("Restoring previous backup since average cost increased")
+            w0=copy.deepcopy(b0)
+            w1=copy.deepcopy(b1)
+            w2=copy.deepcopy(b2)
 
-       
+        else:
+            
+            #backs up weights first
+            print("Backing up weights")
+            b0=copy.deepcopy(w0)
+            b1=copy.deepcopy(w1)
+            b2=copy.deepcopy(w2)
 
-        i+=1
-
-    #gets the average cost 
-    averageCost=totalCost/sampleSize
-    #prints log for current trial
-    print("================================================================END OF SESSION================================================================")
-    w0.clampDerivatives(sampleSize)
-    w1.clampDerivatives(sampleSize)
-    w2.clampDerivatives(sampleSize)
-    print("derivatives are currently:")
-    print(w0.derivatives)
-    print(w1.derivatives)
-    print(w2.derivatives)
-
-    print("The average cost for this session is: "+str(averageCost))
-    print("The average cost in the pervious trial is: "+str(prevAvg))
-    
-    #backs up weights, and tweaks them, if the current iteration is better than previous
-    if prevAvg<averageCost:
+            #tweaks the weights according to the derivatives(can lead toward more total cost, which is what the backup is for)
+            w0.tweakWeights(learningRate)
+            w1.tweakWeights(learningRate)
+            w2.tweakWeights(learningRate)
+            if summary==True:
+                print("Weights after tweak are currently:")
+                print(w0.weights)
+                print(w1.weights)
+                print(w2.weights)
+            #saves the average cost for comparison in the next trial
+            averageCost=totalCost/sampleSize
+            prevAvg=averageCost
         
-        #if current weights are less ideal than previous
-        print("Restoring previous backup since average cost increased")
-        w0=copy.deepcopy(b0)
-        w1=copy.deepcopy(b1)
-        w2=copy.deepcopy(b2)
 
-    else:
-        
-        #backs up weights first
-        print("Backing up weights")
-        b0=copy.deepcopy(w0)
-        b1=copy.deepcopy(w1)
-        b2=copy.deepcopy(w2)
+        counter+=1
 
-        #tweaks the weights according to the derivatives(can lead toward more total cost, which is what the backup is for)
-        w0.tweakWeights(learningRate)
-        w1.tweakWeights(learningRate)
-        w2.tweakWeights(learningRate)
-        print("Weights after tweak are currently:")
-        print(w0.weights)
-        print(w1.weights)
-        print(w2.weights)
-        #saves the average cost for comparison in the next trial
-        averageCost=totalCost/sampleSize
-        prevAvg=averageCost
+
+
+
     a=input()
-
-    counter+=1
-
-
-
-
-a=input()
 
 
 
