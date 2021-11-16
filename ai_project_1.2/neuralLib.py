@@ -153,27 +153,9 @@ class network:
 
             
 
-            
-
-            
-                    
-            
-
 ############################################################FUNCTIONS#####################################################################
 def sigmoid(x):
     return(1/(1+np.exp(-x)))
-
-
-
-
-#TODO: IMPORT AND EXPORT WEIGHTS
-
-#TODO(MAYBE): MAKE ONE GIANT CLASS AND HAVE NEURONS+WEIGHTS AS SUBCLASSES
-
-
-
-    
-    
 
 
 
