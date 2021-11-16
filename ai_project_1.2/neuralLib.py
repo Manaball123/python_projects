@@ -63,7 +63,7 @@ class network:
         for i in range(len(self.derivatives)):
             for j in range(len(self.derivatives[i])):
                 for k in range(len(self.derivatives[i][j])):
-                    self.derivatives[i][j][k]=0
+                    self.derivatives[i][j][k]=0.0
    
     
     def clampDerivatives(self,sampleSize):
@@ -125,6 +125,37 @@ class network:
         """restores backup"""
         self.weights=copy.deepcopy(self.backup)
     
+    def saveToData(self):
+        """saves the current weights to data file(named weights.txt), which is a plaintext file"""
+        writtenStr=""
+        for i in range(len(self.weights)):
+            for j in range(len(self.weights[i])):
+                for k in range(len(self.weights[i][j])):
+                    writtenStr+=str(self.weights[i][j][k])
+                    writtenStr+=" "
+            
+            writtenStr+="\n"
+        
+        
+        with open("weights.txt","w") as weightFile:
+            weightFile.write(writtenStr)
+        
+
+    def loadFromData(self):
+        with open("weights.txt","r") as weightFile:
+            for i in range(len(self.weights)):
+                currentarray=str.split(weightFile.readline())
+                index=0
+                for j in range(len(self.weights[i])):
+                    for k in range(len(self.weights[i][j])):
+                        self.weights[i][j][k]=float(currentarray[index])
+                        index+=1
+
+            
+
+            
+
+            
                     
             
 

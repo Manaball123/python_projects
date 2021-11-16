@@ -21,14 +21,12 @@ def answerConverter(answer):
     else:
         return np.array([0.0,1.0])
 
-
-
 network.initweights(1)
 
 counter=1
-sampleSize=10
+sampleSize=100
 data=np.array([0,0])
-learningRate=1000
+learningRate=100
 totalCost=0
 prevAvg=2147483647
 #not detailed log
@@ -36,7 +34,13 @@ log=False
 #detailed log
 debug=False
 #summary
-summary=False
+summary=True
+
+network.loadFromData()
+
+print(network.weights)
+
+
 
 while True:
     counter=0
@@ -98,16 +102,12 @@ while True:
                 
             #adds current cost to the total cost
             totalCost+=currentCost
-        
-        
-
-        
-
             i+=1
             #a=input()
 
-        #gets the average cost 
+        #gets the average cost and clamps derivative
         averageCost=totalCost/sampleSize
+        network.clampDerivatives(sampleSize)
         #prints log for current trial
         if summary==True:
             print("================================================================END OF SESSION================================================================")
@@ -115,7 +115,7 @@ while True:
             print("derivatives are currently:")
             print(network.derivatives)
 
-        network.clampDerivatives(sampleSize)
+        
 
         print("The average cost for this session is: "+str(averageCost))
         print("The average cost in the pervious trial is: "+str(prevAvg))
@@ -129,22 +129,20 @@ while True:
             #backs up weights first
             print("Backing up weights")
             network.save()
+            network.saveToData()
+            
 
             #tweaks the weights according to the derivatives(can lead toward more total cost, which is what the backup is for)
             network.tweakWeights(learningRate)
             if summary==True:
                 print("Weights after tweak are currently:")
-                network.weights
+                print(network.weights)
 
             #saves the average cost for comparison in the next trial
             averageCost=totalCost/sampleSize
             prevAvg=averageCost
-        
 
         counter+=1
-
-
-
 
     a=input()
 
