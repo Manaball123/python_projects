@@ -18,7 +18,7 @@ class network:
 
 
     def __init__(self,sizes):
-        """sizes: an array containing every layer's size"""
+        """sizes: an array object containing every layer's size"""
         #generates empty neurons
         self.neurons=np.empty(len(sizes),dtype=object)
         #must make one array not empty cuz of numpy weird stuff
@@ -40,6 +40,7 @@ class network:
         self.backup=copy.deepcopy(self.weights)         
     
     def activate(self):
+        """propagates the network"""
         for x in range(len(self.neurons)-1):
             for i in range(len(self.neurons[x+1])):
                 result=0
@@ -53,6 +54,7 @@ class network:
                   
     #randomizes weights
     def initweights(self,multiplier):
+        """randomizes the weights"""
         for i in range(len(self.weights)):
             for j in range(len(self.weights[i])):
                 for k in range(len(self.weights[i][j])):
@@ -60,6 +62,7 @@ class network:
         self.derivatives=copy.deepcopy(self.weights)
 
     def resetDerivatives(self):
+        """sets all derivatives to 0"""
         for i in range(len(self.derivatives)):
             for j in range(len(self.derivatives[i])):
                 for k in range(len(self.derivatives[i][j])):
@@ -75,6 +78,7 @@ class network:
 
 
     def tweakWeights(self,learningRate):
+        """adjust weights based on derivatives"""
         #print("The weights are tweaked at this rate:")
         for i in range(len(self.weights)):
             for j in range(len(self.weights[i])):
@@ -93,6 +97,7 @@ class network:
         return result
     
     def getDerivatives(self,answer):
+        """adds the current sample's derivatives to existing ones"""
         cost=0
         #gets cost of current network
         self.activate()
@@ -142,6 +147,7 @@ class network:
         
 
     def loadFromData(self):
+        """loads the data from the file to weight arrays"""
         with open("weights.txt","r") as weightFile:
             for i in range(len(self.weights)):
                 currentarray=str.split(weightFile.readline())
