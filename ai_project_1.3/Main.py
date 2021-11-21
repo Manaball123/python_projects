@@ -2,18 +2,23 @@ import neuralLib as neural_network
 import numpy as np
 import random
 
-sizes=np.array([2,4,4,2])
+sizes=np.array([20,10,5,1])
 network=neural_network.network(sizes)
 
 def genData():
-    """returns array with data, in the following format:[x,y,answer]"""
+    """returns array with data, in the following format:[(inputs0~19),answer]"""
     x=random.randint(1,10)
     y=random.randint(1,10)
+    dataArr=np.array([0]*21)
     if x*y>=25:
         answer=1
     else:
         answer=0
-    return(np.array([x,y,answer]))
+    dataArr[20]=answer
+    dataArr[x-1]=1
+    dataArr[y+9]=1
+    return(dataArr)
+    
 
 def answerConverter(answer):
     if answer==0:
@@ -25,8 +30,8 @@ network.initweights(1)
 
 counter=1
 sampleSize=100
-data=np.array([0,0])
-learningRate=100
+data=np.array([0]*21)
+learningRate=1
 totalCost=0
 prevAvg=2147483647
 #not detailed log
@@ -36,7 +41,7 @@ debug=False
 #summary
 summary=True
 
-network.loadFromData()
+#network.loadFromData()
 
 print(network.weights)
 
@@ -49,7 +54,7 @@ while True:
         totalCost=0
         print("================================================================STARTING SESSION "+str(counter)+"================================================================")
         seed=0
-        random.seed(seed)
+        #random.seed(seed)
         i=1
         
         network.resetDerivatives()
@@ -57,18 +62,18 @@ while True:
         sampleSize=int(input("Enter Training Sample Size: "))
         learningRate=float(input("Enter Learning Rate: "))
         """
-        sampleSize=100
+        sampleSize=50
         learningRate=1
         while i<=sampleSize:
             #generates training data
             data=genData()
-            seed=seed+1
-            random.seed(seed)
-            answer=answerConverter(data[2])
+            #seed=seed+1
+            #random.seed(seed)
+            answer=np.array([data[20]])
 
             #inputs the data
-            network.neurons[0][0]=data[0]
-            network.neurons[0][1]=data[1]
+            for j in range(len(network.neurons[0])):
+                network.neurons[0][j]=data[j]
             
             #gets output of the network
             network.activate()
@@ -85,8 +90,8 @@ while True:
                 print(network.neurons[1])
                 print("2nd layer:")
                 print(network.neurons[2])
-                print("The output is: "+str(network.neurons[3][0])+","+str(network.neurons[3][1]))
-                print("The correct answer is: "+str(answer[0])+","+str(answer[1]))
+                print("The output is: "+str(network.neurons[3][0]))
+                print("The correct answer is: "+str(answer))
                 print("The cost is therefore "+str(currentCost))
             
             
