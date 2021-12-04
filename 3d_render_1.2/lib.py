@@ -1,6 +1,7 @@
 import numpy as np
 import time
-
+#TODO:
+#PRECALCULATE THE SINE MAP
 void=9
 
 class camera:
@@ -22,13 +23,14 @@ class camera:
         self.rayMap=np.array([])
         #print each row first
         self.screen=np.array([[0]*self.resolution[0]]*self.resolution[1])
+        self.screenMap=np.array([[[0]*2]*self.resolution[0]]*self.resolution[1])
         #SCREEN LOOKS LIKE THIS
-#- 0 1 2 3 4 5 6 7 8 9
-#0 
-#1
-#2
-#3
-#4
+        #- 0 1 2 3 4 5 6 7 8 9
+        #0 
+        #1
+        #2
+        #3
+        #4
 
         
 
@@ -38,10 +40,27 @@ class camera:
 
     def updateRayMap(self,raymap):
         self.rayMap=raymap
+
+    def mapAngles(self):
+        yawDelta=self.fov[0]/self.resolution[0]
+        pitchDelta=self.fov[1]/self.resolution[1]
+        startYaw=self.fov[0]/2+self.baseRotation[0]
+        startPitch=self.fov[1]/2+self.baseRotation[1]
+        currentRotation=np.array([startYaw,startPitch])
+        
+        for i in range(self.resolution[1]):
+            currentRotation[0]=startYaw
+            j=0
+            for j in range(self.resolution[0]):
+                self.screen[i][j]=self.castRay(np.round(currentRotation,2))
+
+                currentRotation[0]-=yawDelta
+            currentRotation[1]-=pitchDelta
+
         
 
 
-    def castRay(self,degAng):
+    def castRay(self,screenPoint):
         """casts ray in specific rotation,returns the pixel type that the ray collided to"""
         #maybe return coordinates in the future for better world optimization
         #initializes target coords
@@ -60,7 +79,6 @@ class camera:
         tangents=np.round(np.tan(angles),2)
        
         #print("which has the tangents x y:"+str(tangents[0])+", "+str(tangents[1]))
-
 
         while targetCoords[0]<len(self.world)-1:
             targetCoords[0]=rCoords[0]+self.coordinates[0]
@@ -118,12 +136,10 @@ class camera:
         startPitch=self.fov[1]/2+self.baseRotation[1]
         currentRotation=np.array([startYaw,startPitch])
         
-        
         for i in range(self.resolution[1]):
             currentRotation[0]=startYaw
             j=0
             for j in range(self.resolution[0]):
-                #print("casted ray for pixel "+str(j)+", "+str(i)+", at angle "+str(np.round(currentRotation,5)))
                 self.screen[i][j]=self.castRay(np.round(currentRotation,2))
 
                 currentRotation[0]-=yawDelta
@@ -132,8 +148,6 @@ class camera:
         endTime=time.time()
         deltaTime=endTime-startTime
         print("Time took to render the screen is: "+str(deltaTime))
-        averageTime=deltaTime/(self.resolution[0]*self.resolution[1])
-        print("Average time for each pixel is: "+str(averageTime))
 
     
 

@@ -1,7 +1,7 @@
 import keyboard as key
 import render
 import numpy as np
-
+import time
 
 
 
@@ -25,6 +25,7 @@ class player:
     self.x=x
     self.y=y
     self.weapon=weapon
+    self.health=100.0
   def move(self,axis,dir):
     #x=0 y=1
     if axis==0 and dir==0 and world[self.x-1][self.y]==0:
@@ -35,20 +36,17 @@ class player:
       self.y-=1
     elif axis==1 and dir==1 and world[self.x][self.y+1]==0:
       self.y+=1
-
-
-
-      
-    
-
-
-    
-
-
-
-
-
-
+  
+class bullet:
+  def __init__(self,x,y,xVel,yVel,damage):
+    self.x=x
+    self.y=y
+    self.xVel=xVel
+    self.yVel=yVel
+    self.damage=damage
+  def move(self):
+    self.x+=self.xVel
+    self.y+=self.yVel
 
 
 
@@ -68,8 +66,8 @@ dictionary = {
 
 
 }
-w=200
-h=53
+w=274
+h=70
 screen=render.screen(w,h,dictionary)
 
 world=np.array([[0]*h]*w)
@@ -93,7 +91,7 @@ screen.addBlock(0,0,0,h-1,1)
 screen.addBlock(w-1,w-1,0,h-1,1)
 screen.addBlock(0,w-1,h-1,h-1,1)
 #########################hardcoded:
-midpoint=100
+midpoint=150
 
 screen.addElement(midpoint-2,1,100)
 screen.addElement(midpoint-1,1,101)
@@ -137,32 +135,36 @@ a=input()
 
 player1=player(50,49,1)
 
-
+tickTime=0.05
+cacheTime=time.time()*1000
+currentTime=time.time()*1000
 while True:
-  
-  prevX=player1.x
-  prevY=player1.y
-  addElement(prevX,prevY,0)
+  currentTime=time.time()*1000
+  if currentTime>=cacheTime+tickTime:
+    cacheTime=currentTime
+    prevX=player1.x
+    prevY=player1.y
+    addElement(prevX,prevY,0)
 
-  try:
-    if key.is_pressed("w"):
-      player1.move(1,0)
-    elif key.is_pressed("s"):
-      player1.move(1,1)
-    elif key.is_pressed("a"):
-      player1.move(0,0)
-    elif key.is_pressed("d"):
-      player1.move(0,1)
-  except:
-    pass
-  
-  addElement(player1.x,player1.y,2)
-  prevX=player1.x
-  prevY=player1.y
-  
-  
+    try:
+      if key.is_pressed("w"):
+        player1.move(1,0)
+      elif key.is_pressed("s"):
+        player1.move(1,1)
+      elif key.is_pressed("a"):
+        player1.move(0,0)
+      elif key.is_pressed("d"):
+        player1.move(0,1)
+    except:
+      pass
+    
+    addElement(player1.x,player1.y,2)
+    prevX=player1.x
+    prevY=player1.y
+    
+    
 
-  screen.printScreen()
+    screen.printScreen()
 
 
 

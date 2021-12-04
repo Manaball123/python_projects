@@ -130,8 +130,9 @@ class network:
         """restores backup"""
         self.weights=copy.deepcopy(self.backup)
     
+    #cant use jsons due to np objects not being able to be converted
     def saveToData(self):
-        """saves the current weights to data file(named weights.txt), which is a plaintext file"""
+        """saves the current weights to data file(named weights.json), which is a json file"""
         writtenStr=""
         for i in range(len(self.weights)):
             for j in range(len(self.weights[i])):

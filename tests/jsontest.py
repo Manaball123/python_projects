@@ -1,18 +1,28 @@
 import json
 
-
-
-
 class test1:
     def __init__(self):
-        self.a=1
-        self.b="hi"
-        self.c=[1,"hello"]
+        self.interger=1
+        self.float=1.1
+        self.boolean=True
+        self.string="string"
+        self.array=["thing1","thing2"]
 
-    def hi():
-        print("hello")
 
-with open("test.json","r+") as f:
-    var=json.decoder.JSONDecoder.decode(f.read())
-    print(var)
 
+object1=test1()
+def saveobj():
+    with open("test.json","w") as f:
+        var=json.dumps(object1)
+        print(var)
+        f.write(var)
+
+def loadobj():
+    with open("test.json","r") as f:
+        var=f.read()
+        object2=json.loads(var)
+        print(object2)
+
+
+saveobj()
+loadobj()

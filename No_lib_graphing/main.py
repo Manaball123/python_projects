@@ -5,8 +5,11 @@ height=80
 
 quitprogram=True
 
+<<<<<<< Updated upstream
 screen=graph.graph(width,height,0.1,0.1)
 
+=======
+>>>>>>> Stashed changes
 def FUNCTION(x):
     output=0
     #PUT UR FUNCTION HERE

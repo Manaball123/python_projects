@@ -87,6 +87,7 @@ class network:
     #USE ONLY FOR DEBUG
     def getCost(self,answer):
         """compares the correct neural activations with the current activations(should be an array), returns a number"""
+        
         result=0
         for i in range(len(answer)):
             result=result+abs(answer[i]-self.neurons[len(self.neurons)-1][i])

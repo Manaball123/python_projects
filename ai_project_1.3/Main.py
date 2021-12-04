@@ -2,7 +2,7 @@ import neuralLib as neural_network
 import numpy as np
 import random
 
-sizes=np.array([20,10,5,1])
+sizes=np.array([20,15,10,5,1])
 network=neural_network.network(sizes)
 
 def genData():
@@ -41,10 +41,8 @@ debug=False
 #summary
 summary=True
 
-#network.loadFromData()
 
 print(network.weights)
-
 
 
 while True:
@@ -54,7 +52,7 @@ while True:
         totalCost=0
         print("================================================================STARTING SESSION "+str(counter)+"================================================================")
         seed=0
-        #random.seed(seed)
+        random.seed(seed)
         i=1
         
         network.resetDerivatives()
@@ -67,8 +65,8 @@ while True:
         while i<=sampleSize:
             #generates training data
             data=genData()
-            #seed=seed+1
-            #random.seed(seed)
+            seed=seed+1
+            random.seed(seed)
             answer=np.array([data[20]])
 
             #inputs the data

@@ -8,8 +8,8 @@ camCoords=np.array([0,5,5])
 camRotation=np.array([0,-5])
 camFOV=np.array([100,45])
 #camRes=np.array([200,70])
-camRes=np.array([64,32])
-#camRes=np.array([20,10])
+#camRes=np.array([64,32])
+camRes=np.array([20,10])
 cam1=render.camera(camCoords,camRotation,camFOV,camRes)
 
 #REWORK RAYCAST SYSTEM

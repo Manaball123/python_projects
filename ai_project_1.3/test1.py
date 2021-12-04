@@ -37,6 +37,8 @@ learningRate=1
 
 
 network.initweights(1)
+network.loadFromData()
+network.saveToData()
 
 counter=0
 while counter<=10000000:
