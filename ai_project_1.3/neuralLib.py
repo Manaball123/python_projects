@@ -131,8 +131,8 @@ class network:
         self.weights=copy.deepcopy(self.backup)
     
     #cant use jsons due to np objects not being able to be converted
-    def saveToData(self):
-        """saves the current weights to data file(named weights.json), which is a json file"""
+    def saveToData(self,name):
+        """saves the current weights to data file"""
         writtenStr=""
         for i in range(len(self.weights)):
             for j in range(len(self.weights[i])):
@@ -143,13 +143,13 @@ class network:
             writtenStr+="\n"
         
         
-        with open("weights.txt","w") as weightFile:
+        with open(name,"w") as weightFile:
             weightFile.write(writtenStr)
         
 
-    def loadFromData(self):
+    def loadFromData(self,name):
         """loads the data from the file to weight arrays"""
-        with open("weights.txt","r") as weightFile:
+        with open(name,"r") as weightFile:
             for i in range(len(self.weights)):
                 currentarray=str.split(weightFile.readline())
                 index=0

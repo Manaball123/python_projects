@@ -41,9 +41,8 @@ debug=False
 #summary
 summary=True
 
-
-print(network.weights)
-
+#uncomment if you want data loaded from file
+#network.loadFromData("weights.txt")
 
 while True:
     counter=0
@@ -132,7 +131,7 @@ while True:
             #backs up weights first
             print("Backing up weights")
             network.save()
-            network.saveToData()
+            network.saveToData("weights.txt")
             
 
             #tweaks the weights according to the derivatives(can lead toward more total cost, which is what the backup is for)

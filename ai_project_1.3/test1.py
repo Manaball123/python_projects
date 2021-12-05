@@ -33,12 +33,12 @@ log=True
 debug=True
 totalCost=0
 prevAvg=2147483647
-learningRate=1
+learningRate=10
 
 
 network.initweights(1)
-network.loadFromData()
-network.saveToData()
+network.loadFromData("testweights.txt")
+network.saveToData("testweights.txt")
 
 counter=0
 while counter<=10000000:
@@ -57,6 +57,8 @@ while counter<=10000000:
             print("--------------------------------Trial "+str(i)+": --------------------------------")
             print("input layer: ")
             print(network.neurons[0])
+            #print("layer 1: ")
+            #print(network.neurons[1])
             print("The output is: "+str(network.neurons[1]))
             print("The correct answer is: "+str(ans[i][0]))
             print("The cost is therefore "+str(currentCost))
