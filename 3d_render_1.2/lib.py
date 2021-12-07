@@ -23,6 +23,7 @@ class camera:
         self.rayMap=np.array([])
         #print each row first
         self.screen=np.array([[0]*self.resolution[0]]*self.resolution[1])
+        #useless for now
         self.screenMap=np.array([[[0]*2]*self.resolution[0]]*self.resolution[1])
         #SCREEN LOOKS LIKE THIS
         #- 0 1 2 3 4 5 6 7 8 9
