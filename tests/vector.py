@@ -20,7 +20,7 @@ def getDist(v1,v2):
     return (length2**2-side**2)**(1/2)
     
 
-vector1=np.array([5,5,0])
+vector1=np.array([10,10,0])
 vector2=np.array([-4,5,0])
 
 print(dotProduct(vector1,vector2))
