@@ -65,7 +65,7 @@ def main1():
     matrix1.InterpolateMatrix(inter2)
     printMatrix(matrix1.matrix)
 
-    matrix1.InterpolateMatrix(50)
+    matrix1.InterpolateMatrix(inter1)
     printMatrix(matrix1.matrix)
 
 main1()
