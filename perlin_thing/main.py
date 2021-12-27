@@ -3,12 +3,9 @@ from lib import waveMatrix
 
 
 
-matrix1 = waveMatrix(100,100,0,1,25,50,50)
+matrix1 = waveMatrix(8,8,0,1,8,16,16)
 
-gridMatrix = matrix1.GenerateGrid(0,0)
-gridMatrix = matrix1.GenerateGrid(0,50)
-gridMatrix = matrix1.GenerateGrid(50,0)
-gridMatrix = matrix1.GenerateGrid(50,50)
+matrix1.GenerateMatrix()
 
 depth = ["  ", " .", " -", " *", " +", " M", " 0", "[[", "##", "@@", "██"]
 
@@ -22,11 +19,18 @@ for i in range(len(matrix1.matrix)):
     for j in range(len(matrix1.matrix[i])):
         string += GetDepth(matrix1.matrix[i][j]) + ""
     string += "\n"
-    
-
-        
-
 print(string)
+for i in range(25):
+    matrix1.InterpolateMatrix(1)
+
+
+string = ""
+for i in range(len(matrix1.matrix)):
+    for j in range(len(matrix1.matrix[i])):
+        string += GetDepth(matrix1.matrix[i][j]) + ""
+    string += "\n"
+print(string)
+
 input()
 
 
