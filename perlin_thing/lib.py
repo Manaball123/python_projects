@@ -41,11 +41,13 @@ class waveMatrix:
         else:
             return 1
 
-    def GenerateMatrix(self):
+    def GenerateMatrix(self, seed):
+        random.seed(seed)
         for i in range(self.xGrids):
             for j in range(self.yGrids):
                 gridMatrix = np.array([[0.0] * self.gridY] * self.gridX)
                 vectorX = random.uniform(-self.vecMag, self.vecMag)
+                
                 #vectorY = Vector2.GetVectorFromLength(self.vecMag, vectorX) * self.GetDirection(random.randint(0,1))
                 vectorY=  random.uniform(-self.vecMag, self.vecMag)
                 vector = np.array([vectorX,vectorY])

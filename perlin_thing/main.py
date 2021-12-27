@@ -1,7 +1,7 @@
 import numpy as np
 from lib import waveMatrix
 
-
+seed = input("Enter Seed: ")
 
 matrix1 = waveMatrix(2,2,0,10,32,64,64)
 matrix2 = waveMatrix(4,4,1,9,16,32,32)
@@ -10,11 +10,12 @@ matrix4 = waveMatrix(16,16,2,8,4,8,8)
 matrix5 = waveMatrix(32,32,3,7,2,4,4)
 
 
-matrix1.GenerateMatrix()
-matrix2.GenerateMatrix()
-matrix3.GenerateMatrix()
-matrix4.GenerateMatrix()
-matrix5.GenerateMatrix()
+
+matrix1.GenerateMatrix(seed)
+matrix2.GenerateMatrix(seed)
+matrix3.GenerateMatrix(seed)
+matrix4.GenerateMatrix(seed)
+matrix5.GenerateMatrix(seed)
 
 depth = ["  ", " .", " -", " *", " +", " M", " 0", "[[", "##", "@@", "██"]
 
