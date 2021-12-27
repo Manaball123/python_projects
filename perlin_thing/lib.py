@@ -60,44 +60,13 @@ class waveMatrix:
 
                         self.matrix[i * self.gridX + k][j * self.gridY + h] = ((1 - (vecDist/self.maxMag)) * self.valueRange) + self.min
 
-    def InterpolateMatrix(self, times, minDelta, interpRange, sampleSize):
+    def InterpolateMatrix(self, times):
         for a in range(times):
             self.matrixCache = copy.deepcopy(self.matrix)
             print(a)
             for i in range(len(self.matrix)):
                 for j in range(len(self.matrix[i])):
-                    
-                    """
-                    avgSum = self.matrix[i][j]
-                    samples = 1
-                    for k in range(4):
-                        xPos = i + self.poses[k][0]
-                        yPos = j + self.poses[k][1]
-                        if(xPos < len(self.matrix) and xPos >= 0 and yPos < len(self.matrix[i]) and yPos >= 0):
 
-                            
-                            if(abs(self.matrixCache[i][j] - self.matrixCache[xPos, yPos]) >= minDelta):
-                                average = (self.matrixCache[i][j] + self.matrixCache[xPos, yPos])/2
-                                avgSum += average
-                                samples += 1
-                                self.matrix[xPos, yPos] = average
-                            
-                    
-                    self.matrix[i][j] = avgSum/samples
-                                #print("changed element at " + str(i) + ", " + str(j) + " and " + str(xPos) +", " + str(yPos) + " to" + str(average))
-                            
-                            
-                            
-                    
-                    while elements < sampleSize:
-                        xOffset = random.randint(-interpRange,interpRange)
-                        yOffset = random.randint(-interpRange,interpRange)
-                        xPos = i + xOffset
-                        yPos = j + yOffset
-                        if(xPos < len(self.matrix) and xPos >= 0 and yPos < len(self.matrix[i]) and yPos >= 0):
-                            sum += self.matrixCache[xPos][yPos]
-                            elements += 1
-                    """
                     sum = self.matrixCache[i][j]
                     elements = 1
                     if(i - 1 >= 0):
