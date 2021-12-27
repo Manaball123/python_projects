@@ -10,7 +10,7 @@ screen=graph.graph(width,height,0.1,0.1)
 def FUNCTION(x):
     output=0
     #PUT UR FUNCTION HERE
-    output=2**x+np.sin(x)**2
+    output=2**x
     #END
     return(output)
     

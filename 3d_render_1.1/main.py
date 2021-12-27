@@ -110,7 +110,7 @@ while True:
     cam1.renderScreen()
     printScreen()
     #cam1.coordinates[0]+=1
-    cam1.baseRotation[0]-=1
+    cam1.baseRotation[0]-=10
 
     i+=1
 
