@@ -16,6 +16,8 @@ class waveMatrix:
         self.vecMag = vecMag
         self.gridX = gridX
         self.gridY = gridY
+        self.maxMag = vecMag + Vector2.VectorLength(np.array([(gridX/2), (gridY/2)]))
+        #print(self.maxMag)
 
     def GetDirection(self,value):
         if(value == 0):
@@ -27,13 +29,13 @@ class waveMatrix:
         gridMatrix = np.array([[0.0] * self.gridY] * self.gridX)
         vectorX = random.uniform(-self.vecMag, self.vecMag)
         vectorY = Vector2.GetVectorFromLength(self.vecMag, vectorX) * self.GetDirection(random.randint(0,1))
-        maxMag = self.vecMag + Vector2.VectorLength(np.array([(vectorX/2) ** 2, (vectorY/2) **2]))
+        
         vector = np.array([vectorX,vectorY])
-        print(vector)
+        #print(vector)
         for i in range(len(gridMatrix)):
             for j in range(len(gridMatrix[i])):
-                print("x is " + str(i - (self.gridX/2)) + ", y is " + str(j - (self.gridY/2)) + ", distance is " + str(Vector2.VectorDist(np.array([i - (self.gridX/2), j - (self.gridY/2)]), vector)))
-                gridMatrix[i][j] = Vector2.VectorDist(np.array([i - (self.gridX/2), j - (self.gridY/2)]), vector)/maxMag
+                #print("x is " + str(i - (self.gridX/2)) + ", y is " + str(j - (self.gridY/2)) + ", distance is " + str(Vector2.VectorDist(np.array([i - (self.gridX/2), j - (self.gridY/2)]), vector)))
+                gridMatrix[i][j] = 1 - (Vector2.VectorDist(np.array([i - (self.gridX/2), j - (self.gridY/2)]), vector)/self.maxMag)
             
         return gridMatrix
         
