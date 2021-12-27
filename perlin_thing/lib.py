@@ -25,7 +25,7 @@ class waveMatrix:
         else:
             return 1
 
-    def GenerateGrid(self):
+    def GenerateGrid(self,startX,startY):
         gridMatrix = np.array([[0.0] * self.gridY] * self.gridX)
         vectorX = random.uniform(-self.vecMag, self.vecMag)
         vectorY = Vector2.GetVectorFromLength(self.vecMag, vectorX) * self.GetDirection(random.randint(0,1))
@@ -35,9 +35,10 @@ class waveMatrix:
         for i in range(len(gridMatrix)):
             for j in range(len(gridMatrix[i])):
                 #print("x is " + str(i - (self.gridX/2)) + ", y is " + str(j - (self.gridY/2)) + ", distance is " + str(Vector2.VectorDist(np.array([i - (self.gridX/2), j - (self.gridY/2)]), vector)))
-                gridMatrix[i][j] = 1 - (Vector2.VectorDist(np.array([i - (self.gridX/2), j - (self.gridY/2)]), vector)/self.maxMag)
+                #gridMatrix[i][j] = 1 - (Vector2.VectorDist(np.array([i - (self.gridX/2), j - (self.gridY/2)]), vector)/self.maxMag)
+                self.matrix[startX + i][startY + j] = 1 - (Vector2.VectorDist(np.array([i - (self.gridX/2), j - (self.gridY/2)]), vector)/self.maxMag)
             
-        return gridMatrix
+    
         
 
 
