@@ -76,14 +76,27 @@ class camera:
         return [round((yaw / self.fov[0]) * (self.resolution[0]) + self.resolution[0]/2) , round((pitch / self.fov[1]) * (self.resolution[1]) + self.resolution[1]/2)]
 
 
-    def renderCube(self,vertices):
+    def renderCube(self,start,end):
         """
-        renders a 8 vertices pologon(can be in weird shape)
-        vertices: array that has 8 vectors
+        renders a cube
+        start: a 3d vector
+        end: a 3d vector
         """
         screenPoints = np.array([np.array([0,0])]*8)
+        vertices = np.array([np.array([0,0,0])]*8)
+
+        vertices[0] = [start[0], start[1], start[2]]
+        vertices[1] = [start[0], end[1], start[2]]
+        vertices[2] = [start[0], end[1], end[2]]
+        vertices[3] = [start[0], start[1], end[2]]
+        vertices[4] = [end[0], start[1], start[2]]
+        vertices[5] = [end[0], end[1], start[2]]
+        vertices[6] = [end[0], end[1], end[2]]
+        vertices[7] = [end[0], start[1], end[2]]
         for i in range(8):
             screenPoints[i] = self.worldToScreen(vertices[i])
+
+
 
 
         self.drawLine(screenPoints[0],screenPoints[1],1)
