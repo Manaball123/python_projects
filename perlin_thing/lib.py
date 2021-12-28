@@ -20,6 +20,15 @@ class waveMatrix:
 
 
     def __init__(self,xGrids,yGrids,min,max,vecMag,gridX,gridY):
+        """
+        xGrids: amount of grids on the x axis
+        yGrids: amount of grids on the y axis
+        min: the minimum level of the wave
+        max: the maximum level of the wave
+        vecMag: the longest distance a vector can be(on one axis)
+        gridX: the x length of each grid
+        gridY: the y length of each grid
+        """
         self.xGrids = xGrids
         self.yGrids = yGrids
         self.matrix = np.array([[0.0] * (yGrids * gridY)] * (xGrids * gridX))
@@ -61,6 +70,9 @@ class waveMatrix:
                         self.matrix[i * self.gridX + k][j * self.gridY + h] = ((1 - (vecDist/self.maxMag)) * self.valueRange) + self.min
 
     def InterpolateMatrix(self, times):
+        """
+        times: times to repeat interpolation
+        """
         for a in range(times):
             self.matrixCache = copy.deepcopy(self.matrix)
             print(a)
@@ -91,6 +103,10 @@ class waveMatrix:
                     
             
     def AddMatrix(self, newMatrix, base):
+        """
+        newMatrix: the matrix to add on to the base matrix
+        base: baseline value for the added matrix(add if higher than base, subtract if lower, clamped to min,max)
+        """
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 self.matrix[i][j] = clamp(self.matrix[i][j] + newMatrix[i][j] - base, self.min, self.max)
