@@ -38,15 +38,70 @@ class camera:
         while i < length:
             i += 1
             currentCoords = np.array([round(p1[0] + vector[0] * i), round(p1[1] + vector[1] * i)])
-            if(currentCoords[0] < self.resolution[0] and currentCoords[1] < self.resolution[1] and currentCoords[0] >= 0 and currentCoords[1] >= 0):
+            if(0 <= currentCoords[0] < self.resolution[0] and 0 <= currentCoords[1] < self.resolution[1]):
                 self.screen[currentCoords[0]][currentCoords[1]] = element
+                #print("added element at " + str(currentCoords))
+
+                
+                
+    def clearScreen(self):
+        self.screen = np.array([[0]*self.resolution[1]]*self.resolution[0])
+
+    def AddRotation(self,rotations):
+        """
+        rotations: rotations added(yaw=0, pitch=1, DO NOT EXCEED 180)
+        """
+        self.baseRotation[0] += rotations[0]
+        self.baseRotation[1] += rotations[1]
+        if(self.baseRotation[0] > 180):
+            self.baseRotation[0] = self.baseRotation[0] - 360
+        elif(self.baseRotation[0] < -180):
+            self.baseRotation[0] = self.baseRotation[0] + 360
+
+        if(self.baseRotation[1] > 180):
+            self.baseRotation[1] = self.baseRotation[1] - 360
+        elif(self.baseRotation[1] < -180):
+            self.baseRotation[1] = self.baseRotation[1] + 360
+
+    #DO NOT USE THIS DIRECTLY
+    def FillFlatTriangle(self,start,end1,end2,element):
+        """
+        end 1 and 2 must have the same x value, end2 must have a lower y than end1
+        """
+        endX = end1[0]
+        vec1 = Vector2.GetDirectionVector(Vector2.VectorSubtract(end1, start))
+        vec2 = Vector2.GetDirectionVector(Vector2.VectorSubtract(end2, start))
+        if(vec1[0] != 0):
+            increment1 = vec1[1] / vec1[0]
+        else:
+            increment1 = 0
+            
+        if(vec2[0] != 0):
+            increment2 = vec2[1] / vec2[0]
+        else:
+            increment2 = 0
+
+        print(increment1)
+        print(increment2)
+        for i in range(endX + 1):
+            yInc1 = round(increment1 * i)
+            yInc2 = round(increment2 * i)
+
+            #drawline but more optimized, cuz its straight
+            if(0 <= yInc1 < self.resolution[1] and 0 <= yInc2 < self.resolution[1]):
+                for j in range(yInc1 - yInc2 + 1):
+                    self.screen[i + start[0]][j + yInc2] = element
                 #print("added element at " + str(currentCoords))
             else:
                 return
-                
-                
+            
+            
 
-        
+            
+
+
+
+  
     def printScreen(self):
         """
         prints the screen in console
@@ -76,7 +131,7 @@ class camera:
         return [round((yaw / self.fov[0]) * (self.resolution[0]) + self.resolution[0]/2) , round((pitch / self.fov[1]) * (self.resolution[1]) + self.resolution[1]/2)]
 
 
-    def renderCube(self,start,end):
+    def renderCube(self,start,end,element):
         """
         renders a cube
         start: a 3d vector
@@ -99,21 +154,21 @@ class camera:
 
 
 
-        self.drawLine(screenPoints[0],screenPoints[1],1)
-        self.drawLine(screenPoints[0],screenPoints[3],1)
-        self.drawLine(screenPoints[0],screenPoints[4],1)
+        self.drawLine(screenPoints[0],screenPoints[1],element)
+        self.drawLine(screenPoints[0],screenPoints[3],element)
+        self.drawLine(screenPoints[0],screenPoints[4],element)
 
-        self.drawLine(screenPoints[2],screenPoints[1],1)
-        self.drawLine(screenPoints[2],screenPoints[3],1)
-        self.drawLine(screenPoints[2],screenPoints[6],1)
+        self.drawLine(screenPoints[2],screenPoints[1],element)
+        self.drawLine(screenPoints[2],screenPoints[3],element)
+        self.drawLine(screenPoints[2],screenPoints[6],element)
 
-        self.drawLine(screenPoints[5],screenPoints[1],1)
-        self.drawLine(screenPoints[5],screenPoints[4],1)
-        self.drawLine(screenPoints[5],screenPoints[6],1)
+        self.drawLine(screenPoints[5],screenPoints[1],element)
+        self.drawLine(screenPoints[5],screenPoints[4],element)
+        self.drawLine(screenPoints[5],screenPoints[6],element)
 
-        self.drawLine(screenPoints[7],screenPoints[3],1)
-        self.drawLine(screenPoints[7],screenPoints[4],1)
-        self.drawLine(screenPoints[7],screenPoints[6],1)
+        self.drawLine(screenPoints[7],screenPoints[3],element)
+        self.drawLine(screenPoints[7],screenPoints[4],element)
+        self.drawLine(screenPoints[7],screenPoints[6],element)
 
         
         

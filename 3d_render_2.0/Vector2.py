@@ -17,4 +17,7 @@ def VectorDist(v1,v2):
 def GetVectorFromLength(length,x):
     return (length ** 2 - x ** 2) ** (1/2)
 
+def GetDirectionVector(v):
+    length = VectorLength(v)
+    return np.array([v[0] / length, v[1]] / length)
 
