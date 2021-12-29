@@ -26,6 +26,8 @@ vector2=np.array([-4,5,0])
 print(dotProduct(vector1,vector2))
 print(getDist(vector1,vector2))
 
+print(np.deg2rad(np.array([10,2,42])))
+
 
 
 
