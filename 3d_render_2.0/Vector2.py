@@ -25,9 +25,6 @@ def GetDirectionVector(v):
     length = VectorLength(v)
     return np.array([v[0] / length, v[1] / length])
     
-def GetPerpVector(v):
-    return np.array([-v[1], v[0]])
-
 
     
 def ANG2VEC(angle):

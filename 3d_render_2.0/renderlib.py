@@ -28,7 +28,6 @@ class camera:
         length = Vector2.VectorDist(p1,p2)
         #print(length)
         if(length == 0):
-            self.screen[p1[0]][p1[1]] = element
             return
         vector = np.array([(p2[0] - p1[0])/length, (p2[1] - p1[1])/length])
         #print(vector)
@@ -98,49 +97,38 @@ class camera:
             else:
                 return
             
-            
 
-            
-
-
-
-  
+    #NOTE:
+    #GHETTO SOLUTION, FIGURE OUT WHY ITS INVERTED
     def printScreen(self):
         """
         prints the screen in console
         """
         outputStr = ""
         #print by column
+        """
         i = self.resolution[1] - 1
         while i >= 0:
             for j in range(self.resolution[0]):
                 outputStr += self.elements[self.screen[j][i]]
             outputStr += "\n" 
             i -= 1
+        """
+        for i in range(self.resolution[1]):
+            for j in range(self.resolution[0]):
+                outputStr += self.elements[self.screen[j][i]]
+            outputStr += "\n" 
 
         print(outputStr)
     
     def getTransformMatrix(self):
-        baseXVector3 = Vector3.ANG2VEC(self.baseRotation[0], self.baseRotation[1])
-        baseYVector2 = Vector2.GetPerpVector(np.array([baseXVector3[0], baseXVector3[1]]))
-        baseZVector2 = Vector2.GetPerpVector(np.array([baseXVector3[0], baseXVector3[2]]))
-        baseYVector3 = np.array([baseYVector2[0], baseYVector2[1], baseXVector3[2]])
-        baseZVector3 = np.array([baseZVector2[0], baseXVector3[1], baseZVector2[1]])
-
-        self.transformMatrix = np.array([baseXVector3, baseYVector3, baseZVector3])
+        self.transformMatrix = Vector3.ANG2MATRIX(self.baseRotation[0], self.baseRotation[1], self.baseRotation[2])
         
 
     def worldToScreen(self,pointCoords):
-        #NEW CONCEPT
-        #MAKE COORDINATE SYSTEM BASED ON CURRENT ROTATION
-        #TRANSFORM POINT INTO SAID COORDINATE SYSTEM
-        #SOLVE USING OLD METHOD
-        #FIRST COLUMN: BASE ANGLE VECTOR
-        #SECOND COLUMN: PERP. Z DEPENDS ON ROLL, WHICH IS CONSTANT
-        #THIRD COLUMN: PERP. Y STAYS CONSST. AS IT DEPEWNDS ON ROLL
 
         relativePosition = Vector3.VectorSubtract(pointCoords, self.coordinates)
-        transformedPosition = Vector3.matrixVecMultiplication(self.transformMatrix, relativePosition)
+        transformedPosition = Vector3.MatrixVecMultiplication(self.transformMatrix, relativePosition)
 
         #relative to camera
     
@@ -148,17 +136,17 @@ class camera:
         pitch = np.rad2deg(np.tanh(transformedPosition[1] / transformedPosition[0]))
         #print(yaw)
         #print(pitch)
-
-        return [round((yaw / self.fov[0]) * (self.resolution[0]) + self.resolution[0]/2) , round((pitch / self.fov[1]) * (self.resolution[1]) + self.resolution[1]/2)]
+        return [round((yaw / self.fov[0]) * self.resolution[0] + self.resolution[0] / 2) , round((pitch / self.fov[1]) * self.resolution[1] + self.resolution[1] / 2)]
 
     def renderCube(self,start,end,element):
+
         """
         renders a cube
         start: a 3d vector
         end: a 3d vector
         """
-        screenPoints = np.array([np.array([0,0])]*8)
-        vertices = np.array([np.array([0,0,0])]*8)
+        screenPoints = np.array([np.array([0,0])] * 8)
+        vertices = np.array([np.array([0,0,0])] * 8)
 
         vertices[0] = [start[0], start[1], start[2]]
         vertices[1] = [start[0], end[1], start[2]]
@@ -174,21 +162,21 @@ class camera:
 
 
 
-        self.drawLine(screenPoints[0],screenPoints[1],element)
-        self.drawLine(screenPoints[0],screenPoints[3],element)
-        self.drawLine(screenPoints[0],screenPoints[4],element)
+        self.drawLine(screenPoints[0], screenPoints[1], element)
+        self.drawLine(screenPoints[0], screenPoints[3], element)
+        self.drawLine(screenPoints[0], screenPoints[4], element)
 
-        self.drawLine(screenPoints[2],screenPoints[1],element)
-        self.drawLine(screenPoints[2],screenPoints[3],element)
-        self.drawLine(screenPoints[2],screenPoints[6],element)
+        self.drawLine(screenPoints[2], screenPoints[1], element)
+        self.drawLine(screenPoints[2], screenPoints[3], element)
+        self.drawLine(screenPoints[2], screenPoints[6], element)
 
-        self.drawLine(screenPoints[5],screenPoints[1],element)
-        self.drawLine(screenPoints[5],screenPoints[4],element)
-        self.drawLine(screenPoints[5],screenPoints[6],element)
+        self.drawLine(screenPoints[5], screenPoints[1], element)
+        self.drawLine(screenPoints[5], screenPoints[4], element)
+        self.drawLine(screenPoints[5], screenPoints[6], element)
 
-        self.drawLine(screenPoints[7],screenPoints[3],element)
-        self.drawLine(screenPoints[7],screenPoints[4],element)
-        self.drawLine(screenPoints[7],screenPoints[6],element)
+        self.drawLine(screenPoints[7], screenPoints[3], element)
+        self.drawLine(screenPoints[7], screenPoints[4], element)
+        self.drawLine(screenPoints[7], screenPoints[6], element)
 
         
         
