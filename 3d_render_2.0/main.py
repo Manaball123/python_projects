@@ -18,8 +18,8 @@ elements = {
 cam1 = render.camera(camcoords,camrotation,camfov,camRes,elements)
 
 
-gridWidth = 10
-gridHeight = 10
+gridWidth = 5
+gridHeight = 5
 edge1Points = np.array([[0, 0, 0]] * gridWidth)
 edge2Points = np.array([[0, 0, 0]] * gridHeight)
 edge3Points = np.array([[0, 0, 0]] * gridWidth)
@@ -99,7 +99,9 @@ while True:
                 cam1.AddRotation([0,-sens])
         except:
             pass
-        cam1.getTransformMatrix()
+
+        #cam1.getTransformMatrix()
+        cam1.AddRotation([0,0])
         cam1.clearScreen()
         cam1.renderCube(p1,p2,1)
         cam1.renderCube(p3,p4,1)

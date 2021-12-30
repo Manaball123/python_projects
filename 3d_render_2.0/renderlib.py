@@ -50,6 +50,7 @@ class camera:
         self.screen = np.array([[0]*self.resolution[1]]*self.resolution[0])
 
     def AddRotation(self,rotations):
+        self.getTransformMatrix()
         """
         rotations: rotations added(yaw=0, pitch=1, DO NOT EXCEED 180)
         """
@@ -131,7 +132,7 @@ class camera:
         transformedPosition = Vector3.MatrixVecMultiplication(self.transformMatrix, relativePosition)
 
         #relative to camera
-    
+        
         yaw = np.rad2deg(np.tanh(transformedPosition[2] / transformedPosition[0]))
         pitch = np.rad2deg(np.tanh(transformedPosition[1] / transformedPosition[0]))
         #print(yaw)

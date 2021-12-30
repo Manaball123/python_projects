@@ -84,6 +84,7 @@ def ANG2MATRIX(yaw, pitch, roll):
     cosPitch = np.cos(np.deg2rad(-pitch))
     sinRoll= np.sin(np.deg2rad(-roll))
     cosRoll = np.cos(np.deg2rad(-roll))
+    
     return np.array([
             [
                 cosYaw * cosPitch,
@@ -106,6 +107,31 @@ def ANG2MATRIX(yaw, pitch, roll):
                 
             ]
         ])
+        
+    """
+    return np.array([
+            [
+                cosYaw * cosPitch,
+                -sinPitch,
+                sinYaw * cosPitch, 
+                
+            ],
+
+            [
+                cosYaw * sinPitch * sinRoll - sinYaw * cosRoll,
+                cosPitch * sinRoll,
+                sinYaw * sinPitch * sinRoll + cosYaw * cosRoll,
+                
+            ],
+
+            [
+                cosYaw * sinPitch * cosRoll + sinYaw * sinRoll,
+                cosPitch * cosRoll,
+                sinYaw * sinPitch * cosRoll - cosYaw * sinRoll,
+                
+            ]
+        ])
+        """
 
 def ANG2XVEC(yaw, pitch, roll):
     yawSin = np.sin(np.deg2rad(yaw))
