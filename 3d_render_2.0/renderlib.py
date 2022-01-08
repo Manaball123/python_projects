@@ -107,6 +107,7 @@ class camera:
         """
         outputStr = ""
         #print by column
+        
         """
         i = self.resolution[1] - 1
         while i >= 0:
@@ -119,11 +120,22 @@ class camera:
             for j in range(self.resolution[0]):
                 outputStr += self.elements[self.screen[j][i]]
             outputStr += "\n" 
+        
 
         print(outputStr)
     
     def getTransformMatrix(self):
-        self.transformMatrix = Vector3.ANG2MATRIX(self.baseRotation[0], self.baseRotation[1], self.baseRotation[2])
+        rotations = np.deg2rad(self.baseRotation)
+        sinYaw = np.sin(rotations[0])
+        cosYaw = np.cos(rotations[0])
+        sinPitch = np.sin(rotations[1])
+        cosPitch = np.cos(rotations[1])
+        xVector = np.array([cosYaw * cosPitch, sinPitch, sinYaw * cosPitch])
+        yVector = Vector3.MatrixVecMultiplication(np.array([[0,1,0],[-1,0,0],[0,0,1]]),xVector)
+        zVector = Vector3.MatrixVecMultiplication(np.array([[0,0,1],[0,1,0],[-1,0,0]]),xVector)
+
+        #self.transformMatrix = np.array([xVector,yVector,zVector])
+        self.transformMatrix = Vector3.ANG2MATRIX(self.baseRotation[0],self.baseRotation[1],self.baseRotation[2])
         
 
     def worldToScreen(self,pointCoords):
@@ -137,7 +149,7 @@ class camera:
         pitch = np.rad2deg(np.tanh(transformedPosition[1] / transformedPosition[0]))
         #print(yaw)
         #print(pitch)
-        return [round((yaw / self.fov[0]) * self.resolution[0] + self.resolution[0] / 2) , round((pitch / self.fov[1]) * self.resolution[1] + self.resolution[1] / 2)]
+        return [round((yaw / self.fov[0]) * self.resolution[0] + self.resolution[0] / 2) , round((pitch / self.fov[1]) * self.resolution[1] + self.resolution[1] / 2), transformedPosition[0]]
 
     def renderCube(self,start,end,element):
 
@@ -146,6 +158,7 @@ class camera:
         start: a 3d vector
         end: a 3d vector
         """
+    
         screenPoints = np.array([np.array([0,0])] * 8)
         vertices = np.array([np.array([0,0,0])] * 8)
 

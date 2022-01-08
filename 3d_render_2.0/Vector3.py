@@ -41,7 +41,7 @@ def GetRotationMatrix(angle,type):
     if(type == 0):
         return np.array([
             [np.cos(np.deg2rad(angle)), 0, np.sin(np.deg2rad(angle))],
-            [0, 1, 0],
+            [0, 1, 0],  
             [-np.sin(np.deg2rad(angle)), 0, np.cos(np.deg2rad(angle))]
         ])
     elif(type == 1):

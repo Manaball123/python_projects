@@ -26,12 +26,12 @@ def answerConverter(answer):
     else:
         return np.array([0.0,1.0])
 
-network.initweights(1)
+network.initweights(0.01)
 
 counter=1
 sampleSize=100
-data=np.array([0]*21)
-learningRate=1
+data = np.array([0] * 21)
+learningRate = 1
 totalCost=0
 prevAvg=2147483647
 #not detailed log
@@ -44,9 +44,9 @@ summary=True
 #uncomment if you want data loaded from file
 #network.loadFromData("weights.txt")
 
-while True:
-    counter=0
-    while counter<=99999:
+while True: 
+    counter = 0
+    while counter <= 99999:
         #resets total cost for a session
         totalCost=0
         print("================================================================STARTING SESSION "+str(counter)+"================================================================")
@@ -63,10 +63,10 @@ while True:
         learningRate=1
         while i<=sampleSize:
             #generates training data
-            data=genData()
-            seed=seed+1
+            data = genData()
+            seed = seed + 1
             random.seed(seed)
-            answer=np.array([data[20]])
+            answer = np.array([data[20]])
 
             #inputs the data
             for j in range(len(network.neurons[0])):

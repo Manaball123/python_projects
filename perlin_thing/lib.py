@@ -58,14 +58,12 @@ class waveMatrix:
                 vectorX = random.uniform(-self.vecMag, self.vecMag)
                 
                 #vectorY = Vector2.GetVectorFromLength(self.vecMag, vectorX) * self.GetDirection(random.randint(0,1))
-                vectorY=  random.uniform(-self.vecMag, self.vecMag)
+                vectorY =  random.uniform(-self.vecMag, self.vecMag)
                 vector = np.array([vectorX,vectorY])
                 for k in range(len(gridMatrix)):
                     for h in range(len(gridMatrix[k])):
-                        #breaking it down to avoid confusion
                         #gets distance from vector
                         vecDist = Vector2.VectorDist(np.array([k - (self.gridX/2), h - (self.gridY/2)]), vector)
-                        
 
                         self.matrix[i * self.gridX + k][j * self.gridY + h] = ((1 - (vecDist/self.maxMag)) * self.valueRange) + self.min
 

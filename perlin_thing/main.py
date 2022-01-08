@@ -39,14 +39,20 @@ inter2 = 15
 
 def main1():
 
+    
     matrix1.InterpolateMatrix(inter1)
     matrix2.InterpolateMatrix(inter1)
     matrix3.InterpolateMatrix(inter1)
     matrix4.InterpolateMatrix(inter1)
     matrix5.InterpolateMatrix(inter1)
+    
 
 
     printMatrix(matrix1.matrix)
+    printMatrix(matrix2.matrix)
+    printMatrix(matrix3.matrix)
+    printMatrix(matrix4.matrix)
+    printMatrix(matrix5.matrix)
 
     matrix1.AddMatrix(matrix2.matrix,5)
     #matrix1.InterpolateMatrix(inter2)
