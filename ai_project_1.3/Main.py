@@ -1,4 +1,5 @@
 
+from numpy.core.fromnumeric import reshape
 import neuralLib as neuralNetwork
 import numpy as np
 import random
@@ -42,19 +43,24 @@ debug = False
 #summary
 summary = False
 totalCost = 0
-poolSize = 10
-subPoolSize = 10
+#poolSize = 20 deprecated :^(
+subPoolSize = 20
 #uncomment if you want data loaded from file
 #network.loadFromData("weights.txt")
+
+#NOT USING MULTITHREAIDNG FOR THIS
 def executeTrial(i,network):
     print("--------------------------------Thread " + str(os.getpid()) + ", Trial "+str(i+1)+": -------------------------------- \n")
     data = trainingData()
+    
     #gets output of the network
     neuralNetwork.propagateNetwork(network.neurons,network.weights)
     #gets cost of current sample
     currentCost = neuralNetwork.getCost(network.neurons,data.answer)
     #gets the gradient of every weight 
-    currentDerivatives = neuralNetwork.getDerivatives(network.weights, network.neurons, data.answer, subPoolSize)
+    currentDerivatives = neuralNetwork.getDerivatives(network, data.answer, subPoolSize)
+    #print("hi")
+    print("ended")
     #print logs
     
     
@@ -76,6 +82,7 @@ def executeTrial(i,network):
         print(network.derivatives)
     """
     #returns derivatives and cost
+    
     return [currentDerivatives,currentCost]
     
 
@@ -102,18 +109,24 @@ if __name__ == "__main__":
             #sample size:
             sampleSize = 50
             learningRate = 1
-            networkIterator = np.array([network] * sampleSize)
+            #networkIterator = np.array([network] * sampleSize)
 
-            iteratorObject = zip(range(sampleSize), networkIterator)
+            #iteratorObject = zip(range(sampleSize), networkIterator)
+            for i in range(sampleSize):
+                results = executeTrial(i,network)
+                network.derivatives = np.add(network.derivatives,results[1])
+                totalCost += results[1]
             
-            neuralNetwork.propagateNetwork(network.neurons,network.weights)
-            pool = multiprocessing.Pool(processes = poolSize)
-            print(str((iteratorObject))
-            results = pool.starmap(executeTrial, iteratorObject)
+            #neuralNetwork.propagateNetwork(network.neurons,network.weights)
+            #neuralNetwork.getDerivatives(network,[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],subPoolSize)
+            #pool = multiprocessing.Pool(processes = poolSize)
+
+            #print(str(iteratorObject))
+            #results = pool.starmap(executeTrial, iteratorObject)
             
-            for i in range(len(results)):
-                network.derivatives = np.add(network.derivatives,results[i][1])
-                totalCost += results[i][2]
+            #for i in range(len(results)):
+            #    network.derivatives = np.add(network.derivatives,results[i][1])
+            #    totalCost += results[i][2]
                 
                 #a=input()
 
