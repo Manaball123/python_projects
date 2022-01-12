@@ -67,6 +67,10 @@ class waveMatrix:
 
                         self.matrix[i * self.gridX + k][j * self.gridY + h] = ((1 - (vecDist/self.maxMag)) * self.valueRange) + self.min
 
+
+
+    
+
     def InterpolateMatrix(self, times):
         """
         times: times to repeat interpolation

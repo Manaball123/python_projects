@@ -1,25 +1,120 @@
 
+from os import O_BINARY
 import numpy as np
 import random
 import copy
+import multiprocessing
 
 
+#CONSTANTS
+delta=1e-5
 
+############################################################FUNCTIONS#####################################################################
+def sigmoid(x):
+    return(1/(1+np.exp(-x)))
+
+def propagateNetwork(neurons,weights):
+        """
+        propagates a network, returns the cost
+        neurons: pointer of the neurons
+        weights: pointer of the weights
+        """
+        neuronsCopy = copy.deepcopy(neurons)
+        for x in range(len(neuronsCopy) - 1):
+            for i in range(len(neuronsCopy[x + 1])):
+                result = 0
+                #adds the weighted sum for a SINGLE NEURON
+                for j in range(len(neuronsCopy[x])):          
+                    result += weights[x][j][i] * neuronsCopy[x][j]
+                #adds the bias, which is the last element of the array
+                result += weights[x][len(weights[x]) - 1][i]
+                result = sigmoid(result) 
+                neuronsCopy[x + 1][i] = result
+        
+        #MAY mess things up, make sure to check
+        d0 = len(neurons) - 1
+        d1 = len(neurons[d0]) - 1
+        output = copy.deepcopy(neurons[d0][d1]) 
+        del neurons
+        return output
+
+        
+
+def getDerivativeOfWeight(weights,neurons,answer,cost,index1,index2,index3):
+    """
+    returns the derivative of a given weight
+    weights: pointer of the weights array
+    neurons: pointer of the neurons array
+    """
+    #saves unchanged weight
+    weightsCopy = copy.deepcopy(weights)
+    currentWeight = weightsCopy[index1][index2][index3]
+                    
+    weightsCopy[index1][index2][index3] += delta
+    propagateNetwork(neurons,weightsCopy)
+    alteredCost = 0
+    for l in range(len(answer)):
+        alteredCost += abs(answer[l] - neurons[len(neurons) - 1][l])
+        #gets the derivative
+    deltaCost = alteredCost-cost
+    #trashes the weights
+    del weightsCopy
+    return np.array([deltaCost/delta,index1,index2,index3])
+    
+
+def getDerivatives(weights,neurons,answer,poolSize):
+    """returns array of derivatives"""
+    cost = 0
+    #gets cost of current network
+    propagateNetwork(neurons,weights)
+    #gets the intial cost
+    for a in range(len(answer)):
+        cost += abs(answer[a] - neurons[len(neurons) - 1][a])
+
+    weightsCount = np.sum(weights)
+    #iterates through every weight
+    weightsIterator = np.array([weights] * weightsCount)
+    neuronsIterator = np.array([neurons] * weightsCount)
+    answerIterator = np.array([answer] * weightsCount)
+    index1Iterator = np.array([0] * weightsCount)
+    index2Iterator = np.array([0] * weightsCount)
+    index3Iterator = np.array([0] * weightsCount)
+
+    counter = 0
+    for i in range(len(weights)):
+        for j in range(len(weights[i])):
+            for k in range(len(weights[i][j])):
+                index1Iterator[counter] = i
+                index2Iterator[counter] = j
+                index3Iterator[counter] = k
+                counter += 1
+
+    pool = multiprocessing.Pool(processes = poolSize)
+    iteratorObject = zip(weightsIterator,neuronsIterator,answerIterator,index1Iterator,index2Iterator,index3Iterator)
+    results = pool.starmap(getDerivativeOfWeight, iteratorObject)   
+    derivatives = copy.deepcopy(weights)
+    for i in range(counter):
+        derivatives[results[counter][1]][results[counter][2]][results[counter][2]] = results[counter][0]
+    
+    return derivatives
+
+    #USE ONLY FOR DEBUG
+def getCost(neurons,answer):
+    """compares the correct neural activations with the current activations(should be an array), returns a number"""
+    result = 0
+    for i in range(len(answer)):
+        result = result + abs(answer[i] - neurons[len(neurons) - 1][i])
+    return result
+    
 
 #####################################################CLASSES####################################################
 
 
 class network:
-
-    #CONSTANTS:
-    delta=1e-8
-
-
-
-
     def __init__(self,sizes):
         """sizes: an array object containing every layer's size"""
         #generates empty neurons
+        #DO NOT USE THIS OBJECT DIRECTLY
         self.neurons = np.empty(len(sizes), dtype = object)
         #must make one array not empty cuz of numpy weird stuff
         for i in range(len(sizes)):
@@ -38,27 +133,15 @@ class network:
         #generates derivatives
         self.derivatives = copy.deepcopy(self.weights)
         self.backup = copy.deepcopy(self.weights)         
-    
-    def activate(self):
-        """propagates the network"""
-        for x in range(len(self.neurons)-1):
-            for i in range(len(self.neurons[x+1])):
-                result = 0
-                #adds the weighted sum for a SINGLE NEURON
-                for j in range(len(self.neurons[x])):          
-                    result += self.weights[x][j][i] * self.neurons[x][j]
-                #adds the bias, which is the last element of the array
-                result += self.weights[x][len(self.weights[x])-1][i]
-                result = sigmoid(result) 
-                self.neurons[x+1][i] = result
-                  
+
     #randomizes weights
     def initweights(self,multiplier):
-        """randomizes the weights"""
+        "randomizes the weights"
+
         for i in range(len(self.weights)):
             for j in range(len(self.weights[i])):
                 for k in range(len(self.weights[i][j])):
-                    self.weights[i][j][k] = sigmoid(random.uniform(-1,1))*multiplier
+                    self.weights[i][j][k] = sigmoid(random.uniform(-1,1)) * multiplier
         self.derivatives = copy.deepcopy(self.weights)
 
     def resetDerivatives(self):
@@ -88,39 +171,7 @@ class network:
                     self.weights[i][j][k] -= self.derivatives[i][j][k] * learningRate
                 #print(-self.derivatives[i][j]*learningRate)
 
-    #USE ONLY FOR DEBUG
-    def getCost(self,answer):
-        """compares the correct neural activations with the current activations(should be an array), returns a number"""
-        result = 0
-        for i in range(len(answer)):
-            result = result + abs(answer[i] - self.neurons[len(self.neurons) - 1][i])
-        return result
-    
-    def getDerivatives(self,answer):
-        """adds the current sample's derivatives to existing ones"""
-        cost = 0
-        #gets cost of current network
-        self.activate()
-        for a in range(len(answer)):
-            cost += abs(answer[a] - self.neurons[len(self.neurons) - 1][a])
-
-        #tweaks every weight in order to get its derivative
-        for i in range(len(self.weights)):
-            for j in range(len(self.weights[i])):
-                for k in range(len(self.weights[i][j])):
-                    #saves unchanged weight
-                    currentWeight = self.weights[i][j][k]
                     
-                    self.weights[i][j][k] += self.delta
-                    self.activate()
-                    alteredCost = 0
-                    for l in range(len(answer)):
-                        alteredCost += abs(answer[l] - self.neurons[len(self.neurons) - 1][l])
-                    #gets the derivative
-                    deltaCost = alteredCost-cost
-                    self.derivatives[i][j][k]+=deltaCost/self.delta
-                    #restores the backup
-                    self.weights[i][j][k]=currentWeight
     
     def save(self):
         """backup weights"""
@@ -160,9 +211,7 @@ class network:
 
             
 
-############################################################FUNCTIONS#####################################################################
-def sigmoid(x):
-    return(1/(1+np.exp(-x)))
+
 
 
 
