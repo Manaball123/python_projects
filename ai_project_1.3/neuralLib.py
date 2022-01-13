@@ -105,8 +105,8 @@ def getDerivatives(neurons,weights,answer,poolSize):
     print("Finished calculating derivatives!")
     for i in range(weightsCount):
         derivatives[indexIterator[i][0]][indexIterator[i][0]][indexIterator[i][0]] = results[i]
-
     del results
+    pool.close()
     return derivatives
     
     #IM A FUCKING CLOWN LMFAO

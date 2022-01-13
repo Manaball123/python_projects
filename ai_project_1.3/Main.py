@@ -123,7 +123,9 @@ if __name__ == "__main__":
                 results = executeTrial(i,network)
                 network.derivatives = np.add(network.derivatives,results[1])
                 totalCost += results[1]
+                del results
             
+
             #neuralNetwork.propagateNetwork(network.neurons,network.weights)
             #neuralNetwork.getDerivatives(network,[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],subPoolSize)
             #pool = multiprocessing.Pool(processes = poolSize)
