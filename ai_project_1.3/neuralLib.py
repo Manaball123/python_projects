@@ -1,12 +1,8 @@
-
-from os import O_BINARY
 import numpy as np
 import random
 import copy
 import multiprocessing
-from numpy.core.fromnumeric import reshape
-
-from numpy.lib.function_base import percentile
+from functools import partial
 
 
 #CONSTANTS
@@ -50,67 +46,67 @@ def propagateNetwork(neurons,weights):
 
         
 
-def getDerivativeOfWeight(network,answer,cost,index):
+def getDerivativeOfWeight(neurons,weights,answer,cost,index):
     """
     returns the derivative of a given weight
     weights: pointer of the weights array
     neurons: pointer of the neurons array
     """
     #saves unchanged weight
-    weightsCopy = copy.deepcopy(network.weights)
+    weightsCopy = copy.deepcopy(weights)
     currentWeight = weightsCopy[index[0]][index[1]][index[2]]
                     
     weightsCopy[index[0]][index[1]][index[2]] += delta
-    propagateNetwork(network.neurons,weightsCopy)
+    propagateNetwork(neurons,weightsCopy)
     alteredCost = 0
     for l in range(len(answer)):
-        alteredCost += abs(answer[l] - network.neurons[len(network.neurons) - 1][l])
+        alteredCost += abs(answer[l] - neurons[len(neurons) - 1][l])
         #gets the derivative
     deltaCost = alteredCost-cost
     #trashes the weights
     del weightsCopy
     #print("finished processing index: " + str(index))
-    return np.array([deltaCost/delta,index[0],index[1],index[2]])
+    return deltaCost/delta
     
 
-def getDerivatives(network,answer,poolSize):
+def getDerivatives(neurons,weights,answer,poolSize):
     """returns array of derivatives"""
     cost = 0
     #gets cost of current network
-    initPropResults = propagateNetwork(network.neurons,network.weights)
+    initPropResults = propagateNetwork(neurons,weights)
     #gets the intial cost
     for a in range(len(answer)):
         cost += abs(answer[a] - initPropResults[a])
 
     
-    weightsCount = countArray(network.weights)
+    weightsCount = countArray(weights)
     #iterates through every weight
-    networkIterator = np.array([network] * weightsCount)
-    answerIterator = np.array([answer] * weightsCount)
-    costIterator = np.array([cost] * weightsCount)
     indexIterator = np.array([np.array([0,0,0])] * weightsCount)
+
     #print(indexIterator)
     counter = 0
     
-    for i in range(len(network.weights)):
-        for j in range(len(network.weights[i])):
-            for k in range(len(network.weights[i][j])):
+    for i in range(len(weights)):
+        for j in range(len(weights[i])):
+            for k in range(len(weights[i][j])):
                 indexIterator[counter][0] = i
                 indexIterator[counter][1] = j
                 indexIterator[counter][2] = k
 
                 #print("i: "+str(i)+" j: "+str(j)+" k: "+str(k))
                 counter += 1
+        
+    #creates a partial function
+
+    getDerivative_partial = partial(getDerivativeOfWeight,neurons,weights,answer,cost)
     pool = multiprocessing.Pool(processes = poolSize)
-    iteratorObject = zip(networkIterator,answerIterator,costIterator,indexIterator)
-    results = pool.starmap(getDerivativeOfWeight, iteratorObject)   
-    derivatives = copy.deepcopy(network.weights)
+    results = pool.map(getDerivative_partial, indexIterator)   
+    derivatives = copy.deepcopy(weights)
     print("Finished calculating derivatives!")
     for i in range(weightsCount):
+        derivatives[indexIterator[i][0]][indexIterator[i][0]][indexIterator[i][0]] = results[i]
 
-
-        derivatives[int(results[i][1])][int(results[i][2])][int(results[i][3])] = results[i][0]
-    
+    del results
     return derivatives
     
     #IM A FUCKING CLOWN LMFAO
@@ -118,14 +114,14 @@ def getDerivatives(network,answer,poolSize):
     #>realizes that i cant make sub processes
     
     
+
+
+    derivatives = copy.deepcopy(weights)
     """
-
-    derivatives = copy.deepcopy(network.weights)
-
-    for i in range(len(network.weights)):
-        for j in range(len(network.weights[i])):
-            for k in range(len(network.weights[i][j])):
-                derivatives[i][j][k] = getDerivativeOfWeight(network,answer,cost,np.array([i,j,k]))
+    for i in range(len(weights)):
+        for j in range(len(weights[i])):
+            for k in range(len(weights[i][j])):
+                derivatives[i][j][k] = getDerivativeOfWeight(neurons,weights,answer,cost,np.array([i,j,k]))[0]
     
     return derivatives
     """
@@ -133,11 +129,12 @@ def getDerivatives(network,answer,poolSize):
 
 
 #USE ONLY FOR DEBUG
-def getCost(neurons,answer):
+def getCost(output,answer):
     """compares the correct neural activations with the current activations(should be an array), returns a number"""
     result = 0
     for i in range(len(answer)):
-        result = result + abs(answer[i] - neurons[len(neurons) - 1][i])
+        #print(abs(answer[i] - output[i]))
+        result = result + abs(answer[i] - output[i])
     return result
     
 
@@ -166,7 +163,16 @@ class network:
         
         #generates derivatives
         self.derivatives = copy.deepcopy(self.weights)
-        self.backup = copy.deepcopy(self.weights)         
+        self.backup = copy.deepcopy(self.weights)    
+
+    def addInputs(self,inputs):
+        "returns the neurons object with added inputs"
+        neuronsCopy = copy.deepcopy(self.neurons)
+        for i in range(len(inputs)):
+            neuronsCopy[0][i] = inputs[i]
+
+        return neuronsCopy
+                 
 
     #randomizes weights
     def initweights(self,multiplier):

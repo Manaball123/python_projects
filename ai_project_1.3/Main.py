@@ -1,29 +1,29 @@
 
-from numpy.core.fromnumeric import reshape
 import neuralLib as neuralNetwork
 import numpy as np
 import random
 import Vector2
 import multiprocessing
 import os
+import time
 
-sizes = np.array([100,50,25,20])
+sizes = np.array([25,20,15,10])
 network = neuralNetwork.network(sizes)
 
 class trainingData:
     def __init__(self):
-        x = random.randint(0,9)
-        y = random.randint(0,9)
+        x = random.randint(0,4)
+        y = random.randint(0,4)
         coordinates = np.array([x,y])
-        self.inputData = np.array([0]*100)
-        for i in range(10):
-            for j in range(10):
-                index = i * 10 + j
-                self.inputData[index] = Vector2.VectorDist(np.array([i,j]), coordinates)
+        self.inputData = np.array([0.0]*25)
+        for i in range(5):
+            for j in range(5):
+                index = i * 5 + j
+                self.inputData[index] = Vector2.VectorDist(np.array([i,j]), coordinates)/5
     
-        self.answer = np.array([0]*20)
-        self.answer[x] = 1
-        self.answer[10 + y] = 1
+        self.answer = np.array([0.0]*10)
+        self.answer[x] = 1.0
+        self.answer[5 + y] = 1.0
         
 
 
@@ -31,47 +31,53 @@ class trainingData:
 network.initweights(0.01)
 
 counter = 1
-sampleSize = 100
+sampleSize = 10
 
 learningRate = 1
 totalCost = 0
 prevAvg = 2147483647
 #not detailed log
-log = False
+log = True
 #detailed log
 debug = False
 #summary
 summary = False
 totalCost = 0
 #poolSize = 20 deprecated :^(
-subPoolSize = 20
+
+#6 is ideal
+subPoolSize = 6
 #uncomment if you want data loaded from file
 #network.loadFromData("weights.txt")
 
 #NOT USING MULTITHREAIDNG FOR THIS
 def executeTrial(i,network):
-    print("--------------------------------Thread " + str(os.getpid()) + ", Trial "+str(i+1)+": -------------------------------- \n")
+    #print("--------------------------------Thread " + str(os.getpid()) + ", Trial "+str(i+1)+": -------------------------------- \n")
     data = trainingData()
     
     #gets output of the network
-    neuralNetwork.propagateNetwork(network.neurons,network.weights)
+    #print(data.inputData)
+    neurons = network.addInputs(data.inputData)
+    #print(neurons)
+    #print(network.weights)
+    output = neuralNetwork.propagateNetwork(neurons, network.weights)
     #gets cost of current sample
-    currentCost = neuralNetwork.getCost(network.neurons,data.answer)
+    currentCost = neuralNetwork.getCost(output,data.answer)
     #gets the gradient of every weight 
-    currentDerivatives = neuralNetwork.getDerivatives(network, data.answer, subPoolSize)
+    currentDerivatives = neuralNetwork.getDerivatives(neurons, network.weights, data.answer, subPoolSize)
     #print("hi")
-    print("ended")
+    #print("ended")
     #print logs
     
     
-    """
+    
     if log == True:
-        print("--------------------------------Thread " + str(os.getpid()) + ", Trial "+str(i)+": --------------------------------")
+        print("--------------------------------Thread " + str(os.getpid()) + ", Trial "+str(i + 1)+": --------------------------------")
         print("Inputs: " + str(data.inputData))
-        print("Outputs: "+str())
+        print("Outputs: "+str(output))
         print("The correct answer is: " + str(data.answer))
         print("The cost is therefore " + str(currentCost))
-    """
+    
     
     #prints detailed logs for every sample processed
     """
@@ -96,6 +102,7 @@ if __name__ == "__main__":
             #resets total cost for a session
             totalCost=0
             print("================================================================STARTING SESSION "+str(counter)+"================================================================")
+            startTime = time.time()
             seed = 0
             random.seed(seed)
             i = 1
@@ -107,7 +114,7 @@ if __name__ == "__main__":
             learningRate=float(input("Enter Learning Rate: "))
             """
             #sample size:
-            sampleSize = 50
+            sampleSize = 10
             learningRate = 1
             #networkIterator = np.array([network] * sampleSize)
 
@@ -138,10 +145,11 @@ if __name__ == "__main__":
             if summary == True:
                 print("================================================================END OF SESSION================================================================")
                 
-                print("derivatives are currently:")
-                print(network.derivatives)
+                #print("derivatives are currently:")
+                #print(network.derivatives)
 
-            
+            endTime = time.time()
+            print("Time Taken: "+ str(endTime-startTime))
 
             print("The average cost for this session is: " + str(averageCost))
             print("The average cost in the pervious trial is: " + str(prevAvg))
@@ -170,5 +178,5 @@ if __name__ == "__main__":
 
             counter += 1
 
-            a=input()
+            input()
 
