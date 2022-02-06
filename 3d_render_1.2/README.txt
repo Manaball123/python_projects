@@ -1,0 +1,2 @@
+Unusable at the moment as I'm trying to make it more optimized by saving the tangent values of each pixel.
+I could possibly look at my commits on github to find the earlier version that worked if needed.
