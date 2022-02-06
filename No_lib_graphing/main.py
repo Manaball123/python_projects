@@ -6,11 +6,13 @@ height=50
 quitprogram=True
 
 screen=graph.graph(width,height,0.1,0.1)
+def sigmoid(x):
+    return(1/(1+np.exp(-x)))
 
 def FUNCTION(x):
     output=0
     #PUT UR FUNCTION HERE
-    output=2**x
+    return(1/(1+np.exp(-x)))
     #END
     return(output)
     
@@ -25,12 +27,6 @@ while i<=150:
 
 print(screen.getGraph())
 a=input()
-
-
-
-
-
-
 
 
 

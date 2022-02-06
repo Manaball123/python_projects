@@ -73,7 +73,7 @@ def executeTrial(i,network):
     
     if log == True:
         print("--------------------------------Thread " + str(os.getpid()) + ", Trial "+str(i + 1)+": --------------------------------")
-        print("Inputs: " + str(data.inputData))
+        print("Inputs: " + str(neurons[0]))
         print("Outputs: "+str(output))
         print("The correct answer is: " + str(data.answer))
         print("The cost is therefore " + str(currentCost))
