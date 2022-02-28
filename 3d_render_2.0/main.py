@@ -3,6 +3,7 @@ import numpy as np
 import keyboard as key
 import renderlib as render
 import Vector3
+import Vector4
 import time
 
 camcoords = [-10,5,5]
@@ -70,7 +71,7 @@ addedRotation = np.array([1,0])
 
 
 startFrameTime = time.time()
-timePerFrame = 0.05
+timePerFrame = 0.1
 
 while True:
     if(time.time() > startFrameTime + timePerFrame):
@@ -105,8 +106,9 @@ while True:
         cam1.clearScreen()
         cam1.renderCube(p1,p2,1)
         cam1.renderCube(p3,p4,1)
-        drawGrid()
+        #drawGrid()
         #cam1.drawLine([100,0],[100,20],1)
+        input()
         print("position is " + str(cam1.coordinates) +" and rotation is" + str(cam1.baseRotation))
         dirvec = Vector3.ANG2VEC(cam1.baseRotation[0], cam1.baseRotation[1])
 

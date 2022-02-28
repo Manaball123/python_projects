@@ -1,6 +1,7 @@
 import numpy as np
 import Vector2
 import Vector3
+import Vector4
 class camera:
     def __init__(self,coordinates,baseRotation,fov,resolution,elements):
         """
@@ -18,7 +19,7 @@ class camera:
         self.elements = elements
         
         self.screen = np.array([[0]*self.resolution[1]]*self.resolution[0])
-        self.transformMatrix = np.array([[0]*3]*3)
+        self.transformMatrix = np.array([[0]*4]*4)
         #useless for now
         
     def drawLine(self,p1,p2,element):
@@ -125,6 +126,7 @@ class camera:
         print(outputStr)
     
     def getTransformMatrix(self):
+        """
         rotations = np.deg2rad(self.baseRotation)
         sinYaw = np.sin(rotations[0])
         cosYaw = np.cos(rotations[0])
@@ -133,23 +135,30 @@ class camera:
         xVector = np.array([cosYaw * cosPitch, sinPitch, sinYaw * cosPitch])
         yVector = Vector3.MatrixVecMultiplication(np.array([[0,1,0],[-1,0,0],[0,0,1]]),xVector)
         zVector = Vector3.MatrixVecMultiplication(np.array([[0,0,1],[0,1,0],[-1,0,0]]),xVector)
+        """
 
         #self.transformMatrix = np.array([xVector,yVector,zVector])
-        self.transformMatrix = Vector3.ANG2MATRIX(self.baseRotation[0],self.baseRotation[1],self.baseRotation[2])
+        self.transformMatrix = Vector4.PERSPMATRIX(self.coordinates[0],self.coordinates[1],self.coordinates[2],self.baseRotation[0],self.baseRotation[1],self.baseRotation[2])
         
 
     def worldToScreen(self,pointCoords):
-
+        """
         relativePosition = Vector3.VectorSubtract(pointCoords, self.coordinates)
         transformedPosition = Vector3.MatrixVecMultiplication(self.transformMatrix, relativePosition)
-
+        
         #relative to camera
         
         yaw = np.rad2deg(np.tanh(transformedPosition[2] / transformedPosition[0]))
         pitch = np.rad2deg(np.tanh(transformedPosition[1] / transformedPosition[0]))
+        
         #print(yaw)
         #print(pitch)
         return [round((yaw / self.fov[0]) * self.resolution[0] + self.resolution[0] / 2) , round((pitch / self.fov[1]) * self.resolution[1] + self.resolution[1] / 2), transformedPosition[0]]
+        """
+        print("it was at "+str(pointCoords))
+        transformedVec = Vector4.Transform(np.array([pointCoords[0],pointCoords[1],pointCoords[2],1]),self.transformMatrix)
+        print("it is at "+str(transformedVec))
+        return(transformedVec[0],transformedVec[1])
 
     def renderCube(self,start,end,element):
 

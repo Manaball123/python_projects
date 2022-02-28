@@ -24,8 +24,6 @@ class trainingData:
         self.answer = np.array([0.0]*10)
         self.answer[x] = 1.0
         self.answer[5 + y] = 1.0
-        
-
 
 
 network.initweights(0.01)
@@ -72,7 +70,7 @@ def executeTrial(i,network):
     
     
     if log == True:
-        print("--------------------------------Thread " + str(os.getpid()) + ", Trial "+str(i + 1)+": --------------------------------")
+        print("--------------------------------PID " + str(os.getpid()) + ", Trial "+str(i + 1)+": --------------------------------")
         print("Inputs: " + str(neurons[0]))
         print("Outputs: "+str(output))
         print("The correct answer is: " + str(data.answer))
@@ -91,10 +89,9 @@ def executeTrial(i,network):
     
     return [currentDerivatives,currentCost]
     
-
 processes = []
-
 maxProcesses = 10
+
 if __name__ == "__main__":
     while True: 
         counter = 0

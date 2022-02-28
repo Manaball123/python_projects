@@ -108,16 +108,10 @@ def getDerivatives(neurons,weights,answer,poolSize):
     del results
     pool.close()
     return derivatives
-    
-    #IM A FUCKING CLOWN LMFAO
-    #>spends whole day making multiprocessing
-    #>realizes that i cant make sub processes
-    
-    
 
-
-    derivatives = copy.deepcopy(weights)
+    
     """
+    derivatives = copy.deepcopy(weights)
     for i in range(len(weights)):
         for j in range(len(weights[i])):
             for k in range(len(weights[i][j])):
@@ -177,7 +171,6 @@ class network:
     #randomizes weights
     def initweights(self,multiplier):
         "randomizes the weights"
-
         for i in range(len(self.weights)):
             for j in range(len(self.weights[i])):
                 for k in range(len(self.weights[i][j])):
