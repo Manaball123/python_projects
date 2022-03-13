@@ -60,7 +60,8 @@ def getDerivativeOfWeight(neurons,weights,answer,cost,index):
     propagateNetwork(neurons,weightsCopy)
     alteredCost = 0
     for l in range(len(answer)):
-        alteredCost += abs(answer[l] - neurons[len(neurons) - 1][l])
+        #proper way to get costs
+        alteredCost += (answer[l] - neurons[len(neurons) - 1][l]) ** 2
         #gets the derivative
     deltaCost = alteredCost-cost
     #trashes the weights
@@ -76,7 +77,7 @@ def getDerivatives(neurons,weights,answer,poolSize):
     initPropResults = propagateNetwork(neurons,weights)
     #gets the intial cost
     for a in range(len(answer)):
-        cost += abs(answer[a] - initPropResults[a])
+        cost += (answer[a] - initPropResults[a]) ** 2
 
     
     weightsCount = countArray(weights)
@@ -127,8 +128,8 @@ def getCost(output,answer):
     """compares the correct neural activations with the current activations(should be an array), returns a number"""
     result = 0
     for i in range(len(answer)):
-        #print(abs(answer[i] - output[i]))
-        result = result + abs(answer[i] - output[i])
+
+        result = result + (answer[i] - output[i]) ** 2
     return result
     
 
