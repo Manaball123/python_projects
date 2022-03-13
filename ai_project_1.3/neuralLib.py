@@ -10,8 +10,9 @@ delta=1e-5
 
 
 ############################################################FUNCTIONS#####################################################################
-def sigmoid(x):
-    return(1/(1+np.exp(-x)))
+def signal(x):
+    #return(1/(1+np.exp(-x)))
+    return(np.tanh(x))
 
 def countArray(a):
     counter = 0
@@ -35,7 +36,7 @@ def propagateNetwork(neurons,weights):
                     result += weights[x][j][i] * neuronsCopy[x][j]
                 #adds the bias, which is the last element of the array
                 result += weights[x][len(weights[x]) - 1][i]
-                result = sigmoid(result) 
+                result = signal(result) 
                 neuronsCopy[x + 1][i] = result
         
         #MAY mess things up, make sure to check
@@ -174,7 +175,7 @@ class network:
         for i in range(len(self.weights)):
             for j in range(len(self.weights[i])):
                 for k in range(len(self.weights[i][j])):
-                    self.weights[i][j][k] = sigmoid(random.uniform(-1,1)) * multiplier
+                    self.weights[i][j][k] = signal(random.uniform(-1,1)) * multiplier
         self.derivatives = copy.deepcopy(self.weights)
 
     def resetDerivatives(self):

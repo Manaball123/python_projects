@@ -29,7 +29,7 @@ class trainingData:
 network.initweights(0.01)
 
 counter = 1
-sampleSize = 10
+sampleSize = 100
 
 learningRate = 1
 totalCost = 0
@@ -111,7 +111,7 @@ if __name__ == "__main__":
             learningRate=float(input("Enter Learning Rate: "))
             """
             #sample size:
-            sampleSize = 10
+            sampleSize = 100
             learningRate = 1
             #networkIterator = np.array([network] * sampleSize)
 
