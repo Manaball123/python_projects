@@ -19,6 +19,8 @@ frametime = 1/30
 
 ticktimer = time.time()
 frametimer = time.time()
+
+checkCD = 0
 #ik the elifs are cancer but i aint got no switch
 #its a minigame wtf do u expect
 
@@ -109,6 +111,19 @@ class snake:
             self.segments.pop(0)
         else:
             self.retractSnake = True
+    
+    def pauseCheck(self):
+        global checkCD
+        if(checkCD > 60):
+            if(key.is_pressed("p")):
+                print("GAME PAUSED")
+                checkCD = 0
+                time.sleep(1)
+                while (key.is_pressed("p")) == False:
+                    time.sleep(1)
+        else:
+            checkCD += 1
+                
 
 
 snake1 = snake(25,25)
@@ -135,6 +150,7 @@ while snake1.deathState == False:
     
     if ticktime + ticktimer < time.time():
         
+        snake1.pauseCheck()
         snake1.moveHead()
 
         snake1.dotCheck(dotx,doty)

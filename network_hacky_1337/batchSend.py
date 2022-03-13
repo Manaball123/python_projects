@@ -29,10 +29,14 @@ if __name__ == "__main__":
     #rawInput = input("input data to send: ")
     poolSize = 10
     pool = multiprocessing.Pool(processes = poolSize)
-
-    HOST = '10.7.180.19'
+    
+    HOST = '10.7.183.254'
     ports = np.array([135, 139, 445, 3306, 3389, 5040, 5357, 8733, 27036, 33060, 49664, 49665, 49666, 49667, 49668, 49669, 49678])
 
+    """
+    HOST = '1.1.1.3'
+    ports = [100]
+    """
     #outdata = bytes(rawInput,'utf-8')
         
     

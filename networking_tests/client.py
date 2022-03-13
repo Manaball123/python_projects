@@ -1,7 +1,7 @@
 import socket
 
-HOST = '10.7.180.19'  
-PORT = 135
+HOST = '10.7.180.29'  
+PORT = 42069
 while True:
     rawInput=input("input data to send: ")
 

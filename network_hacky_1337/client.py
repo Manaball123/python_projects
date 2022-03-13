@@ -1,10 +1,9 @@
 import socket
 
-HOST = '10.7.180.19'  
-PORT = 135
+HOST = '10.7.180.29'  
+PORT = 42069
 while True:
-    #rawInput=input("input data to send: ")
-    rawInput = "hi"
+    rawInput=input("input data to send: ")
     outdata = bytes(rawInput,'utf-8')
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

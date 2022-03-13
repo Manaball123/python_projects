@@ -1,9 +1,10 @@
 
 import socket
 import multiprocessing
+#from multiprocessing.dummy import Pool
 import numpy as np
 from functools import partial
-
+import time
 
 def checkPort(port,ip):
     global validports
@@ -25,12 +26,15 @@ if __name__ == "__main__":
     validports = []
     #rawInput = input("input data to send: ")
     poolSize = 60
+
     pool = multiprocessing.Pool(processes = poolSize)
+    #pool = Pool(processes = poolSize)
+    #pool = dummy.
 
-    HOST = '1.1.1.3'
+    HOST = '10.7.180.29'
 
-    iterator = np.array([0]*100000)
-    for i in range(100000):
+    iterator = np.array([0]*65536)
+    for i in range(65536):
         iterator[i] = i
     #outdata = bytes(rawInput,'utf-8')
         
@@ -38,9 +42,12 @@ if __name__ == "__main__":
     checkport_part = partial(checkPort, ip = HOST)
     results = pool.map(checkport_part,iterator)
     filtered_results = []
+    startTIme = time.time()
     for i in range(len(results)):
         if(results[i] != None):
             filtered_results.append(results[i])
+    endTime = time.time()
+    print("took " + str(endTime - startTIme) + " seconds to scan")
     print(filtered_results)
     input("found these ports")
 
