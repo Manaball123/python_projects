@@ -61,6 +61,7 @@ def getDerivativeOfWeight(neurons,weights,answer,cost,index):
     propagateNetwork(neurons,weightsCopy)
     alteredCost = 0
     for l in range(len(answer)):
+        #proper way to get costs
         alteredCost += (answer[l] - neurons[len(neurons) - 1][l]) ** 2
         #gets the derivative
     deltaCost = alteredCost-cost
