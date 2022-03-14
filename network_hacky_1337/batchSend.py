@@ -31,7 +31,7 @@ if __name__ == "__main__":
     pool = multiprocessing.Pool(processes = poolSize)
     
     HOST = '10.7.183.254'
-    ports = np.array([135, 139, 445, 3306, 3389, 5040, 5357, 8733, 27036, 33060, 49664, 49665, 49666, 49667, 49668, 49669, 49678])
+    ports = np.array([23, 80, 443, 64443])
 
     """
     HOST = '1.1.1.3'

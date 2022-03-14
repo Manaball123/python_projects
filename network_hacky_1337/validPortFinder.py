@@ -31,7 +31,7 @@ if __name__ == "__main__":
     #pool = Pool(processes = poolSize)
     #pool = dummy.
 
-    HOST = '10.7.180.29'
+    HOST = '10.7.183.254'
 
     iterator = np.array([0]*65536)
     for i in range(65536):
@@ -40,9 +40,10 @@ if __name__ == "__main__":
         
     
     checkport_part = partial(checkPort, ip = HOST)
+    startTIme = time.time()
     results = pool.map(checkport_part,iterator)
     filtered_results = []
-    startTIme = time.time()
+    
     for i in range(len(results)):
         if(results[i] != None):
             filtered_results.append(results[i])
