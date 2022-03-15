@@ -1,0 +1,244 @@
+{
+    "NETWORKCFG": {
+        "hiddenRange": 7,
+        "identifier": 0,
+        "inputRange": 1,
+        "maxConnections": 7,
+        "maxNeurons": 10,
+        "outputRange": 9
+    },
+    "NEURONS": [
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "addresses": [
+                4,
+                7,
+                6,
+                8,
+                3,
+                10,
+                9
+            ],
+            "buffer": 0.0,
+            "connections": 7,
+            "isActive": false,
+            "isInput": true,
+            "isOutput": false,
+            "weights": [
+                0.9294264635032958,
+                0.4420917535775557,
+                -0.047417465068076536,
+                0.38131143174052373,
+                -0.7085394990463212,
+                -0.07318461867514126,
+                0.7951427670965299
+            ]
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "addresses": [
+                7,
+                4,
+                2,
+                3,
+                8,
+                9,
+                5
+            ],
+            "buffer": 0.0,
+            "connections": 7,
+            "isActive": false,
+            "isInput": true,
+            "isOutput": false,
+            "weights": [
+                0.505790966191001,
+                -0.13246915548034166,
+                0.2691956373766897,
+                -0.5377283333502558,
+                -0.2588915477813454,
+                -0.9011150685809024,
+                0.6607875862142523
+            ]
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "addresses": [
+                9,
+                3,
+                7,
+                6,
+                10,
+                5,
+                8
+            ],
+            "buffer": 0.0,
+            "connections": 7,
+            "isActive": false,
+            "isInput": false,
+            "isOutput": false,
+            "weights": [
+                0.4650242827187312,
+                -0.6038067354076744,
+                0.5076410373763149,
+                -0.8798210843793315,
+                -0.24176366712700847,
+                0.415655028063185,
+                0.8382081879726972
+            ]
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "addresses": [
+                4,
+                9,
+                2,
+                6,
+                10,
+                7,
+                8
+            ],
+            "buffer": 0.0,
+            "connections": 7,
+            "isActive": false,
+            "isInput": false,
+            "isOutput": false,
+            "weights": [
+                0.2950488546453449,
+                0.5317835339807464,
+                0.7033498677630332,
+                -0.26754869876445464,
+                -0.8863446892654612,
+                -0.0148783703943407,
+                -0.5830535468744256
+            ]
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "addresses": [
+                4,
+                3,
+                7,
+                9,
+                6,
+                10,
+                5
+            ],
+            "buffer": 0.0,
+            "connections": 7,
+            "isActive": false,
+            "isInput": false,
+            "isOutput": false,
+            "weights": [
+                0.9515955848665671,
+                0.1259437799818055,
+                -0.3343981360014343,
+                0.5044318059436623,
+                -0.008790572630444693,
+                0.6185643452622387,
+                0.030113313379511064
+            ]
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "addresses": [
+                5,
+                9,
+                4,
+                8,
+                3,
+                7,
+                6
+            ],
+            "buffer": 0.0,
+            "connections": 7,
+            "isActive": false,
+            "isInput": false,
+            "isOutput": false,
+            "weights": [
+                -0.8497206474004542,
+                0.41902530722929066,
+                -0.517523053069805,
+                0.7182325306285602,
+                0.39688084224554543,
+                0.8541707939933485,
+                0.5307198585255744
+            ]
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "addresses": [
+                2,
+                4,
+                7,
+                6,
+                5,
+                3,
+                10
+            ],
+            "buffer": 0.0,
+            "connections": 7,
+            "isActive": false,
+            "isInput": false,
+            "isOutput": false,
+            "weights": [
+                0.8048927617544288,
+                -0.6634158913444779,
+                0.4517754458248122,
+                0.6596413022994432,
+                0.22100665957809995,
+                0.5434135811197347,
+                0.8747952407391877
+            ]
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "addresses": [
+                3,
+                5,
+                10,
+                8,
+                6,
+                7,
+                9
+            ],
+            "buffer": 0.0,
+            "connections": 7,
+            "isActive": false,
+            "isInput": false,
+            "isOutput": false,
+            "weights": [
+                -0.10388014821314462,
+                -0.2576405287943,
+                0.512986465277613,
+                -0.9914392059469239,
+                -0.05595338212150125,
+                -0.9157372663077239,
+                0.6688894202374793
+            ]
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "buffer": 0.0,
+            "isActive": false,
+            "isInput": false,
+            "isOutput": true
+        },
+        {
+            "activation": 0.0,
+            "activeBuffer": false,
+            "buffer": 0.0,
+            "isActive": false,
+            "isInput": false,
+            "isOutput": true
+        }
+    ]
+}
