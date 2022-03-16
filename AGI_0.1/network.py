@@ -15,6 +15,32 @@ import math
 #instead of propagating everything at once, signals are followed instead and activates "dormant" neurons
 
 
+#CONCEPT1. DECENTRALIZED MONITORING
+#0. MEASURE ACTIVATION A0
+#1. CHANGE WEIGHT RANDOMLY
+#2. MEASURE ACTIVATION A1
+#3. CHANGE WEIGHT BASED ON A1-A0, PROPAGATE THROUGH "EVOLVE"  NETWORK
+#4. MEASURE ACTIVATION A2
+#5. CHANGE WEIGHT BASED ON A2-A1, PROPAGATE THROUGH "EVOLVE"  NETWORK
+#etc etc
+
+#pros: mimicks human brains better
+#      easier to make
+#      (maybe) less resource intensive
+
+#cons: (maybe) doesn't scale well, not flexible
+#      doesn't evaluate the entire network
+
+
+
+
+#CONCEPT2: 
+
+
+#probably will be a mess initially but MAYBE its possible to get some meaningful connection thing from it
+
+
+
 def signal(x):
     y = 1/(1 + np.exp(-x))
     return y
@@ -37,6 +63,7 @@ class neuron:
             self.addresses = np.array([-1] * connections)
             self.weights = np.array([np.nan] * connections)
 
+        
         
     def InitConnections(self,genRange,inputsRange,weightRange):
         """
@@ -207,8 +234,8 @@ class Network:
             for i in range(self.maxNeurons):
                 #load neuron attributes
                 for j in neuronsData[i]:
-
                     setattr(self.neurons[i], j, neuronsData[i][j])
+
                 if(neuronsData[i]["isOutput"] == False):
                     self.neurons[i].addresses = np.array(neuronsData[i]["addresses"])
                     self.neurons[i].weights = np.array(neuronsData[i]["weights"])
