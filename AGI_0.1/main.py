@@ -8,18 +8,21 @@
 #one step towards agi..
 
 
+from multiprocessing import connection
 import evolver
 import network
 import visualizer
 
 def main():
     width = 32
-    neurons = 400
+    neurons = 1024
     inputs = 2
-    hiddens = 396
+    hiddens = 1020
     outputs = 2
-    network0 = network.Network(neurons, neurons - 3, inputs, hiddens, outputs, 0)
-    network0.InitNetwork(0.1)
+    #connections = neurons - inputs
+    connections = 10
+    network0 = network.Network(neurons, connections, inputs, hiddens, outputs, 0)
+    network0.InitNetwork(0.01)
     #network0.saveNeurons()
     #network0.loadNeurons()
     #print(network0.neurons[1])
