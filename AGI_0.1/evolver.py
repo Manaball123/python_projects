@@ -3,16 +3,35 @@
 #only changes every generation
 
 #inputs of 
-
-class neuron:
-    def __init__(self):
-        pass
+import numpy as np
+import random
 
 
-#output of this should be connections of each neuron in the main network
+#mini network managing each neuron, use this for concept 1(decentralized networking)
 class learnerNetwork:
-    def __init__(self,weights,):
-        pass
+    def __init__(self,outputs):
+        self.layer0 = np.array([0.0] * 2)
+        self.layer1 = np.array([0.0] * outputs)
+        self.weights = np.array([[0.0] * 2] * outputs)
+
+    def initWeights(self,randRange):
+        for i in range(len(self.weights)):
+            for j in range(len(self.weights[i])):
+                self.weights[i][j] = random.uniform(-randRange,randRange)
+
+
+    #ticks the network, call when "learning" is needed(AFTER propagation is complete)
+    def propagate(self):
+        self.layer[0] = self.data0 
+        self.layer[0] = self.data1 
+        for i in range(len(self.layer1)):
+            self.layer1[i] = self.layer0[0] * self.weights[i][0] + self.layer0[1] * self.weights[i][1]
+
+    
+    
+
+
+
 
 
 

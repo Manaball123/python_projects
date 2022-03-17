@@ -34,7 +34,10 @@ import math
 
 
 
-#CONCEPT2: 
+#CONCEPT2: CENTRALIZED MONIORING
+#0: MAKE NETWORK WITH ALL NEURONS AS INPUTS AND ALL WEIGHTS AS OUTPUTS
+#1: natural selection
+
 
 
 #probably will be a mess initially but MAYBE its possible to get some meaningful connection thing from it
