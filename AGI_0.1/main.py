@@ -13,7 +13,8 @@ import math
 from multiprocessing import connection
 import evolver
 import network
-import visualizer
+
+
 
 def main():
     width = 32
@@ -48,4 +49,7 @@ def main():
 
 
 main()
+
+  
+
 

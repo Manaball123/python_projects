@@ -31,7 +31,7 @@ if __name__ == "__main__":
     #pool = Pool(processes = poolSize)
     #pool = dummy.
 
-    HOST = '10.7.183.254'
+    HOST = '51.161.134.100'
 
     iterator = np.array([0]*65536)
     for i in range(65536):

@@ -30,8 +30,8 @@ if __name__ == "__main__":
     poolSize = 10
     pool = multiprocessing.Pool(processes = poolSize)
     
-    HOST = '10.7.183.254'
-    ports = np.array([23, 80, 443, 64443])
+    HOST = '51.161.134.100'
+    ports = np.array([27015])
 
     """
     HOST = '1.1.1.3'

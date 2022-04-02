@@ -1,4 +1,3 @@
-from re import L
 import render
 import numpy as np
 import time
