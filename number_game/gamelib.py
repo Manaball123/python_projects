@@ -23,6 +23,8 @@ class Player:
 class Game:
     def __init__(self, numbers_count, players):
         self.players = []
+        self.numbers_count = numbers_count
+        self.players_count = players
         for i in range(players):
             self.players.append(Player(numbers_count))
 

@@ -9,7 +9,6 @@ n1.vertices[0].connections.append(1)
 n1.vertices[0].connections.append(2)
 n1.vertices[0].connections.append(3)
 
-n1.vertices[1].connections.append(2)
 n1.vertices[1].connections.append(4)
 
 n1.vertices[2].connections.append(1)
