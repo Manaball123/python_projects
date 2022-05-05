@@ -71,6 +71,7 @@ def GenerateGM(game_instance):
 
 
 G_results = []
+G_ctr = 0
 
 class Thread (threading.Thread):
    def __init__(self, threadID, name, counter, args = ()):
@@ -84,8 +85,11 @@ class Thread (threading.Thread):
 
 def Evaluate(turn, game_instance, game_matrix, max_depth, current_depth = 0, steps = []):
     global G_results
+    global G_ctr
+    G_ctr += 1
     #print(game_matrix)
     #print()
+    print("\nProcessing " + str(G_ctr))
     if(current_depth < max_depth):
         #iterate through all potential player choices
         for i in range(game_instance.players_count):
@@ -123,13 +127,15 @@ def Evaluate(turn, game_instance, game_matrix, max_depth, current_depth = 0, ste
                                 #if no one won after this
                                 else:
                                     #go down 
-                                    if(current_depth < 2):
+                                    
+                                    if(current_depth < 4):
                                         #spawn new threads if depth is low enough
                                         tid = current_depth * 1000 + i * 100 + j * 10 + k
 
-                                        t = Thread(tid, str(tid), tid,((turn + 1) % game_instance.players_count, game_instance, gm, max_depth, current_depth + 1, new_steps))
+                                        t = Thread(tid, str(tid), tid, ((turn + 1) % game_instance.players_count, game_instance, gm, max_depth, current_depth + 1, new_steps))
                                         t.start()
                                     else:
+                                    
                                         Evaluate((turn + 1) % game_instance.players_count, game_instance, gm, max_depth, current_depth + 1, new_steps)
 
 
@@ -139,14 +145,14 @@ def Evaluate(turn, game_instance, game_matrix, max_depth, current_depth = 0, ste
 
 game1 = gl.Game(2,2)
 
-print("Hi")
+if __name__ == "__main__":
+    Evaluate(0, game1,GenerateGM(game1), 8)
+    print("finished")
+    for i in range(len(G_results)):
+        PrintSteps(G_results[i], game1)
 
-Evaluate(0, game1,GenerateGM(game1), 16)
-for i in range(len(G_results)):
-    PrintSteps(G_results[i],game1)
 
-
-input()
+    input()
 
 
 
