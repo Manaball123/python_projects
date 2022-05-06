@@ -90,7 +90,7 @@ def executeTrial(i,network):
     return [currentDerivatives,currentCost]
     
 processes = []
-maxProcesses = 10
+maxProcesses = 16
 
 if __name__ == "__main__":
     while True: 
